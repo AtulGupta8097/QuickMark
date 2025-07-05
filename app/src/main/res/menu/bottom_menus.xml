@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Shop"
+        android:id="@+id/ShopFragment"
+        android:icon="@drawable/menu_home_icon"
+        tools:ignore="HardcodedText" />
+
+    <item android:title="Search"
+        android:id="@+id/SearchFragment"
+        android:icon="@drawable/menu_search_icon"
+        tools:ignore="HardcodedText" />
+
+    <item android:title="Cart"
+        android:id="@+id/CartActivity"
+        android:icon="@drawable/menu_cart_icon"
+        tools:ignore="HardcodedText" />
+
+    <item android:title="Account"
+        android:id="@+id/AccountFragment"
+        android:icon="@drawable/menu_profile_icon"
+        tools:ignore="HardcodedText" />
+</menu>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Core Colors -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Green & Orange (replaced orange with green as you had it) -->
+    <color name="green">#3AA14C</color>
+    <color name="orange">#3AA14C</color>
+
+    <!-- Text Colors -->
+    <color name="orange_text">#173C1D</color>
+
+    <!-- Greys -->
+    <color name="grey">#F3F3F3</color>
+    <color name="light_grey">#F6F6F6</color>
+    <color name="dark_grey">#505358</color>
+
+    <!-- Status Colors -->
+    <color name="red">#E62A18</color>
+
+    <!-- Card Colors -->
+    <color name="card_bg">#FFFFFFFF</color>
+    <color name="MP_card_bg">#E6F4EA</color>
+    <color name="MP_card_border">#4CAF50</color>
+
+    <color name="category_image_bg">#F6F6F6</color>
+
+</resources>

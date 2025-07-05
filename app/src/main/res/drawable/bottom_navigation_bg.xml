@@ -1,0 +1,9 @@
+<!-- res/drawable/bottom_nav_bg.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/white"/>
+<!--    <stroke-->
+<!--        android:width="0.48dp"-->
+<!--        android:color="@color/dark_grey"-->
+<!--        android:dashWidth="0dp"-->
+<!--        android:dashGap="0dp" />-->
+</shape>

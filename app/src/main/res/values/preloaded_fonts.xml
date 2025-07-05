@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/akshar</item>
+        <item>@font/amaranth_bold</item>
+        <item>@font/fira_sans</item>
+        <item>@font/poppins</item>
+        <item>@font/poppins_bold</item>
+        <item>@font/roboto</item>
+    </array>
+</resources>

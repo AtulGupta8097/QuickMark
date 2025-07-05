@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Core Colors -->
+    <color name="black">#FFFFFFFF</color>               <!-- Inverted for text in dark mode -->
+    <color name="white">#FF000000</color>               <!-- Background surfaces -->
+
+    <!-- Primary Green (Replacing 'orange') -->
+    <color name="green">#81C784</color>
+    <color name="orange">#81C784</color>
+
+    <!-- Text Colors -->
+    <color name="orange_text">#A5D6A7</color>
+
+    <!-- Greys -->
+    <color name="grey">#1E1E1E</color>                  <!-- Main dark background -->
+    <color name="light_grey">#2C2C2C</color>            <!-- Card and surface background -->
+    <color name="dark_grey">#B0BEC5</color>             <!-- Light grey for subtitles, labels -->
+
+    <!-- Status Colors -->
+    <color name="red">#FF8A80</color>                   <!-- Softened red -->
+
+    <!-- Card Colors -->
+    <color name="card_bg">#2C2C2C</color>               <!-- Card background -->
+    <color name="MP_card_bg">#2E3C30</color>            <!-- Special card background -->
+    <color name="MP_card_border">#A5D6A7</color>        <!-- Light green border -->
+
+    <color name="category_image_bg">#1F1F1F</color>
+
+
+</resources>

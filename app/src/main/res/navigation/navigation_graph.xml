@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/ShopFragment">
+    <fragment
+        android:id="@+id/ShopFragment"
+        android:name="com.example.groceryapp.fragments.ShopFragment"
+        android:label="Shop">
+        <action
+            android:id="@+id/action_ShopFragment_to_CategoryFragment"
+            app:destination="@id/CategoryFragment" />
+        <action
+            android:id="@+id/action_ShopFragment_to_SearchFragment"
+            app:destination="@id/SearchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SearchFragment"
+        android:name="com.example.groceryapp.fragments.SearchFragment"
+        android:label="Search"/>
+    <fragment
+        android:id="@+id/AccountFragment"
+        android:name="com.example.groceryapp.fragments.AccountFragment"
+        android:label="Account"/>
+    <fragment
+        android:id="@+id/CategoryFragment"
+        android:name="com.example.groceryapp.fragments.CategoryFragment"
+        android:label="Category"/>
+
+
+
+
+</navigation>
