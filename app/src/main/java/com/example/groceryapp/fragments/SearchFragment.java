@@ -1,7 +1,6 @@
 package com.example.groceryapp.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +44,15 @@ public class SearchFragment extends Fragment {
         userViewModel.fetchAllProducts();
         setupAdapter();
         observeAllProduct();
+        onBackArrowClicked();
 
         return binding.getRoot();
+    }
+
+    private void onBackArrowClicked() {
+        binding.backArrow.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
     }
 
     private void setupAdapter() {
@@ -72,12 +78,7 @@ public class SearchFragment extends Fragment {
                         beautyProduct.add(p);
                     }
                 }
-                for(int i=0;i<beveragesProduct.size();i++){
-                    Log.d("error","items are:"+beveragesProduct.get(i).getProductTitle());
-                }
-                for(int i=0;i<beautyProduct.size();i++){
-                    Log.d("error","items are:" + beautyProduct.get(i).getProductTitle());
-                }
+
                 updateCategorySections();
             }
         });

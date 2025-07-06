@@ -1,13 +1,17 @@
 package com.example.groceryapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +21,7 @@ import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.OnCategoryClickedListener;
 import com.example.groceryapp.ProductListener;
 import com.example.groceryapp.R;
+import com.example.groceryapp.SeeAllCategoryActivity;
 import com.example.groceryapp.databinding.ProductDesignBinding;
 
 import java.util.ArrayList;
@@ -115,16 +120,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     }
 
-    // Product Grid ViewHolder
     static class ProductGridViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recyclerView;
+        AppCompatButton seeAllBtn;
+
         public ProductGridViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.categoryRecyclerView);
+            seeAllBtn = itemView.findViewById(R.id.seeAllBtn);
         }
 
         public void setProductData(Context context, List<Product> products) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+            recyclerView.setLayoutManager(gridLayoutManager);
+
             ProductAdapter adapter = new ProductAdapter(new ProductListener() {
                 @Override
                 public void onAddBtnClicked(Product product, ProductDesignBinding binding) {}
@@ -133,9 +142,25 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onMinusBtnClicked(int count, Product product, ProductDesignBinding binding) {}
             });
-            recyclerView.setLayoutManager(gridLayoutManager);
+
+            // Show only 6 items
+            List<Product> displayedProducts = products.size() > 6 ? products.subList(0, 6) : products;
+            adapter.submitList(displayedProducts);
             recyclerView.setAdapter(adapter);
-            adapter.submitList(products);
+
+            // Show/hide See All button
+            if (products.size() > 6) {
+                seeAllBtn.setVisibility(View.VISIBLE);
+                seeAllBtn.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, SeeAllCategoryActivity.class);
+                    intent.putExtra("category", products.get(0).getProductCategory());
+                    context.startActivity(intent);
+                });
+
+            } else {
+                seeAllBtn.setVisibility(View.GONE);
+            }
         }
     }
+
 }
