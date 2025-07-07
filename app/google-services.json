@@ -8,6 +8,28 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:513684201445:android:1303e871e3a7016f87590c",
+        "android_client_info": {
+          "package_name": "com.example.groceryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB2zFHBwWkNjB0cGC0WGyUqX5xsueMvcM"
+        },
+        {
+          "current_key": "AIzaSyCAPxtkAKGleUU0bDITUYhCbAk28HdM5s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:513684201445:android:a67b99180ad87b1487590c",
         "android_client_info": {
           "package_name": "com.example.groceryapp"
@@ -15,6 +37,9 @@
       },
       "oauth_client": [],
       "api_key": [
+        {
+          "current_key": "AIzaSyDB2zFHBwWkNjB0cGC0WGyUqX5xsueMvcM"
+        },
         {
           "current_key": "AIzaSyCAPxtkAKGleUU0bDITUYhCbAk28HdM5s8"
         }

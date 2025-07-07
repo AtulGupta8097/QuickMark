@@ -79,7 +79,7 @@ public class OtpActivity extends AppCompatActivity {
             }
 
             Utils.showDialog(this, "Verifying OTP...");
-            Users user = new Users(number, null);
+            Users user = new Users(number);
             viewModel.signInWithPhoneAuthCredential(otp, user);
         });
     }
@@ -107,8 +107,7 @@ public class OtpActivity extends AppCompatActivity {
                     }
 
                     // Save session
-                    new com.example.groceryapp.SessionManager(this).saveUserPhone(number);
-
+                    Utils.setUserPhoneNumber(number);
                     if (hasPassword) {
                         startActivity(new Intent(this, com.example.groceryapp.Activity.MainActivity.class));
                     } else {

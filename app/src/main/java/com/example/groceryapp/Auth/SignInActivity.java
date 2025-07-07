@@ -50,13 +50,14 @@ public class SignInActivity extends AppCompatActivity {
             if (isSuccess == null) return;
 
             if (isSuccess) {
-                SessionManager sessionManager = new SessionManager(this);
-                sessionManager.saveUserPhone(binding.numberEd.getText().toString().trim());
+                // Save to Utils' SharedPreferences
+                Utils.setUserPhoneNumber(binding.numberEd.getText().toString().trim());
 
                 startActivity(new Intent(this, MainActivity.class));
                 finishAffinity();
             }
         });
+
 
 
         // Observe messages

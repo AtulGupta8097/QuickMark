@@ -53,7 +53,6 @@ NavController navController;
         if (address.equals("Not found")) {
             userViewModel.getUserAddressFromFirebase().observe(this, userAddress -> {
                 if (userAddress != null && !userAddress.equals("Not found")) {
-                    Log.d("Pref", userAddress);
                     userViewModel.saveUserAddressInPref(userAddress);
                 }
             });

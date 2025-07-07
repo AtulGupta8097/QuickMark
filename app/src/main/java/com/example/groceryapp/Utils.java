@@ -11,47 +11,63 @@ import androidx.lifecycle.Observer;
 
 import com.example.groceryapp.databinding.ProgressDialogBinding;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public final class Utils {
+
     private static AlertDialog dialog;
     private static FirebaseAuth auth;
-    private static FirebaseUser user;
-    private static String uid;
-    public static void showToast(Context context, String msg){
+    private static Context appContext;  // ✅ for safe global access
+
+    // Must be called once in Application class
+    public static void init(Context context) {
+        appContext = context.getApplicationContext();
+    }
+
+    public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
-    public static void showDialog(Context context,String message){
+
+    public static void showDialog(Context context, String message) {
         ProgressDialogBinding progress = ProgressDialogBinding.inflate(LayoutInflater.from(context));
         progress.progressMsg.setText(message);
 
         dialog = new AlertDialog.Builder(context).setView(progress.getRoot()).setCancelable(false).create();
         dialog.show();
-
     }
-    public static void hideDialog(){
-        if(dialog!=null && dialog.isShowing()){
+    public static void setUserPhoneNumber(String phoneNumber) {
+        if (appContext == null) {
+            throw new IllegalStateException("Utils.init() not called in Application class.");
+        }
+        appContext.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+                .edit()
+                .putString("user_phone", phoneNumber)
+                .apply();
+    }
+
+    public static void hideDialog() {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
         }
     }
 
-    public static FirebaseAuth getInstance(){
-        if(auth==null){
+    public static FirebaseAuth getInstance() {
+        if (auth == null) {
             auth = FirebaseAuth.getInstance();
         }
         return auth;
+    }
 
-    }
-    public static String getUserId(){
-        if(uid==null){
-        uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    public static String getUserPhoneNumber() {
+        if (appContext == null) {
+            throw new IllegalStateException("Utils.init() not called in Application class.");
         }
-        return uid;
+        return appContext.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+                .getString("user_phone", null);
     }
+
     public static String getUniqueId() {
         return "ORD-" + UUID.randomUUID().toString();
     }
@@ -65,6 +81,4 @@ public final class Utils {
             }
         });
     }
-
-
 }

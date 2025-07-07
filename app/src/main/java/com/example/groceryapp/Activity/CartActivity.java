@@ -239,7 +239,7 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
             String address = userViewModel.getCachedUserAddress();
             OrdersModel order = new OrdersModel(cartProducts,
                     address,
-                    Utils.getUserId(),
+                    Utils.getUserPhoneNumber(),
                     getCurrentDate(),
                     Utils.getUniqueId(),
                     0

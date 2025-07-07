@@ -3,6 +3,7 @@ package com.example.groceryapp.viewModels;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -38,28 +39,37 @@ public class UserViewModel extends AndroidViewModel {
     private final MutableLiveData<String> userAddressFirebase = new MutableLiveData<>();
 
     private final CartRepository cartRepository;
+    private final Context appContext;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
-
+        appContext = application.getApplicationContext();
         executorService = Executors.newSingleThreadExecutor();
-        cartProductDao = CartProductDatabase.getInstance(application.getApplicationContext()).myDao();
+        cartProductDao = CartProductDatabase.getInstance(appContext).myDao();
         cartProduct = cartProductDao.getCartProducts();
 
         cartSharedPreferences = application.getSharedPreferences("cart_pref", Context.MODE_PRIVATE);
         userAddressPreferences = application.getSharedPreferences("AddressPref", Context.MODE_PRIVATE);
-
         cartRepository = CartRepository.getInstance();
     }
 
-    // CATEGORY PRODUCTS FETCH
+    private String getCurrentPhone() {
+        String phone = Utils.getUserPhoneNumber();
+        if (phone == null) {
+            Log.e("UserViewModel", "User phone number not found in SharedPreferences.");
+        }
+        return phone;
+    }
+
     public void fetchCategoryProduct(String category) {
         categoryProduct.setValue(null);
+        String phone = getCurrentPhone();
+        if (phone == null) return;
 
         DatabaseReference categoryRef = FirebaseDatabase.getInstance().getReference()
                 .child("Admins").child("AdminInfo").child("ProductCategory").child(category);
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                .child("Admins").child("AdminInfo").child("userCarts").child(Utils.getUserId());
+                .child("Admins").child("AdminInfo").child("userCarts").child(phone);
 
         categoryRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -72,8 +82,7 @@ public class UserViewModel extends AndroidViewModel {
                             Product p = snap.getValue(Product.class);
                             if (p != null) {
                                 if (cartSnap.hasChild(p.getProductId())) {
-                                    Integer count = cartSnap.child(p.getProductId())
-                                            .child("itemCount").getValue(Integer.class);
+                                    Integer count = cartSnap.child(p.getProductId()).child("itemCount").getValue(Integer.class);
                                     p.setItemCount(count != null ? count : 0);
                                 } else {
                                     p.setItemCount(0);
@@ -94,69 +103,21 @@ public class UserViewModel extends AndroidViewModel {
         });
     }
 
-
-
-    public LiveData<List<Product>> getAllProducts() {
-        return allProducts;
-    }
-
-    public void increaseBuyCountInFirebase(CartProduct product, int incrementBy) {
-        String productId = product.getProductId();
-        String category = product.getProductCategory();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
-
-        // Update in AllProducts
-        dbRef.child("Admins")
-                .child("AdminInfo")
-                .child("AllProducts")
-                .child(productId)
-                .child("buyCount")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    int current = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
-                    dbRef.child("Admins")
-                            .child("AdminInfo")
-                            .child("AllProducts")
-                            .child(productId)
-                            .child("buyCount")
-                            .setValue(current + incrementBy);
-                });
-
-        // Update in ProductCategory
-        dbRef.child("Admins")
-                .child("AdminInfo")
-                .child("ProductCategory")
-                .child(category)
-                .child(productId)
-                .child("buyCount")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    int current = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
-                    dbRef.child("Admins")
-                            .child("AdminInfo")
-                            .child("ProductCategory")
-                            .child(category)
-                            .child(productId)
-                            .child("buyCount")
-                            .setValue(current + incrementBy);
-                });
-    }
-
-
     public void fetchAllProducts() {
-        DatabaseReference allProductsRef = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Admins").child("AdminInfo").child("AllProducts");
+        String phone = getCurrentPhone();
+        if (phone == null){
+            Log.d("Error","Phone is null");
+        }
 
-        DatabaseReference cartRef = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Admins").child("AdminInfo").child("userCarts").child(Utils.getUserId());
+        DatabaseReference allProductsRef = FirebaseDatabase.getInstance().getReference()
+                .child("Admins").child("AdminInfo").child("AllProducts");
+        DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                .child("Admins").child("AdminInfo").child("userCarts").child(phone);
 
         allProductsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot productSnap) {
                 List<Product> productList = new ArrayList<>();
-
                 cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot cartSnap) {
@@ -164,8 +125,7 @@ public class UserViewModel extends AndroidViewModel {
                             Product p = snap.getValue(Product.class);
                             if (p != null) {
                                 if (cartSnap.hasChild(p.getProductId())) {
-                                    Integer count = cartSnap.child(p.getProductId())
-                                            .child("itemCount").getValue(Integer.class);
+                                    Integer count = cartSnap.child(p.getProductId()).child("itemCount").getValue(Integer.class);
                                     p.setItemCount(count != null ? count : 0);
                                 } else {
                                     p.setItemCount(0);
@@ -173,32 +133,27 @@ public class UserViewModel extends AndroidViewModel {
                                 productList.add(p);
                             }
                         }
-
                         allProducts.setValue(productList);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // handle error if needed
-                    }
+                    public void onCancelled(@NonNull DatabaseError error) {}
                 });
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // handle error if needed
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-
-
-
 
     public MutableLiveData<List<Product>> getCategoryProduct() {
         return categoryProduct;
     }
 
-    // CART COUNT MANAGEMENT
+    public LiveData<List<Product>> getAllProducts() {
+        return allProducts;
+    }
+
     public void setNumberOfCart(int numberOfItem) {
         Integer current = cartRepository.getNumberOfCart().getValue();
         if (current == null) current = 0;
@@ -210,15 +165,16 @@ public class UserViewModel extends AndroidViewModel {
     public LiveData<Integer> getNumberOfCart() {
         int count = cartSharedPreferences.getInt("cartCount", 0);
         if (cartRepository.getNumberOfCart().getValue() == null || cartRepository.getNumberOfCart().getValue() == 0) {
-            syncCartToPreferences(Utils.getUserId());
+            syncCartToPreferences(getCurrentPhone());
         }
         cartRepository.setNumberOfCart(count);
         return cartRepository.getNumberOfCart();
     }
 
-    public void syncCartToPreferences(String userId) {
+    public void syncCartToPreferences(String phone) {
+        if (phone == null) return;
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
-                .child("Admins").child("AdminInfo").child("userCarts").child(userId);
+                .child("Admins").child("AdminInfo").child("userCarts").child(phone);
 
         cartRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -240,23 +196,30 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     public void updateCartProductItemCount(String productId, int count) {
+        String phone = getCurrentPhone();
+        if (phone == null) return;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
                 .child("Admins").child("AdminInfo");
-        databaseReference.child("userCarts").child(Utils.getUserId())
-                .child(productId).child("itemCount").setValue(count);
+        databaseReference.child("userCarts").child(phone).child(productId).child("itemCount").setValue(count);
     }
-    public void deleteCartProductFromFirebaseDb(){
+
+    public void deleteCartProductFromFirebaseDb() {
+        String phone = getCurrentPhone();
+        if (phone == null) return;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
                 .child("Admins").child("AdminInfo");
-        databaseReference.child("userCarts").removeValue();
+        databaseReference.child("userCarts").child(phone).removeValue();
     }
-    public void saveUserAddressToFirebase(String address){
+
+    public void saveUserAddressToFirebase(String address) {
+        String phone = getCurrentPhone();
+        if (phone == null) return;
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("Admins").child("AdminInfo").child("UserAddress").child(Utils.getUserId());
-        databaseReference.child("Address").setValue(address);
+                .child("AllUsers").child("User").child("UserAddress").child(getCurrentPhone());
+        databaseReference.setValue(address);
     }
+
     public LiveData<String> getUserAddressFromFirebase() {
-        // Only fetch from Firebase if value not already loaded
         if (userAddressFirebase.getValue() == null) {
             fetchUserAddressFromFirebase();
         }
@@ -264,17 +227,19 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     private void fetchUserAddressFromFirebase() {
+        String phone = getCurrentPhone();
+        if (phone == null) {
+            userAddressFirebase.setValue("Not found");
+            return;
+        }
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("Admins").child("AdminInfo").child("UserAddress").child(Utils.getUserId()).child("Address");
+                .child("AllUsers").child("User").child("UserAddress").child(getCurrentPhone());
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    userAddressFirebase.setValue(snapshot.getValue(String.class));
-                } else {
-                    userAddressFirebase.setValue("Not found");
-                }
+                userAddressFirebase.setValue(snapshot.exists() ? snapshot.getValue(String.class) : "Not found");
             }
 
             @Override
@@ -283,18 +248,34 @@ public class UserViewModel extends AndroidViewModel {
             }
         });
     }
-    public void saveOrder(OrdersModel order){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
-                .child("Admins")
-                .child("AdminInfo")
-                .child("Orders")
-                .child(order.getOrderId());
-        databaseReference.setValue(order);
 
+    public void saveOrder(OrdersModel order) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("Admins").child("AdminInfo").child("Orders").child(order.getOrderId());
+        databaseReference.setValue(order);
     }
 
+    public void increaseBuyCountInFirebase(CartProduct product, int incrementBy) {
+        String productId = product.getProductId();
+        String category = product.getProductCategory();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
 
-    // ROOM DATABASE ACCESS
+        dbRef.child("Admins").child("AdminInfo").child("AllProducts").child(productId).child("buyCount")
+                .get().addOnSuccessListener(snapshot -> {
+                    int current = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
+                    dbRef.child("Admins").child("AdminInfo").child("AllProducts").child(productId)
+                            .child("buyCount").setValue(current + incrementBy);
+                });
+
+        dbRef.child("Admins").child("AdminInfo").child("ProductCategory").child(category)
+                .child(productId).child("buyCount").get().addOnSuccessListener(snapshot -> {
+                    int current = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
+                    dbRef.child("Admins").child("AdminInfo").child("ProductCategory").child(category)
+                            .child(productId).child("buyCount").setValue(current + incrementBy);
+                });
+    }
+
+    // Room DB methods
     public void insertCartProduct(CartProduct cartProduct) {
         executorService.execute(() -> cartProductDao.insertProduct(cartProduct));
     }
@@ -311,28 +292,19 @@ public class UserViewModel extends AndroidViewModel {
         executorService.execute(() -> cartProductDao.deleteCartProductById(cartProductId));
     }
 
-    public void deleteAllCartProductFromRoomDB(){
+    public void deleteAllCartProductFromRoomDB() {
         executorService.execute(cartProductDao::deleteAllCartProduct);
-
     }
 
-    // USER ADDRESS PREFS
     public void saveUserAddressInPref(String address) {
         userAddressPreferences.edit().putString("UserAddress", address).apply();
     }
 
-
-
     public String getUserAddressFromPref() {
-        return userAddressPreferences.getString("UserAddress","Not found");
+        return userAddressPreferences.getString("UserAddress", "Not found");
     }
 
     public String getCachedUserAddress() {
-        if (userAddressFirebase.getValue() != null) {
-            return userAddressFirebase.getValue();
-        } else {
-            return getUserAddressFromPref();
-        }
+        return userAddressFirebase.getValue() != null ? userAddressFirebase.getValue() : getUserAddressFromPref();
     }
-
 }

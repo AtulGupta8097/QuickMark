@@ -14,6 +14,7 @@ import com.example.groceryapp.Auth.AuthenticationActivity;
 import com.example.groceryapp.Auth.PasswordActivity;
 import com.example.groceryapp.R;
 import com.example.groceryapp.SessionManager;
+import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivitySplashBinding;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -67,43 +68,47 @@ public class SplashActivity extends AppCompatActivity {
                 .start();
 
         // Delay before routing to next screen
-        new Handler().postDelayed(this::decideNextActivity, 2000);
+        new Handler().postDelayed(this::decideNextActivity, 1300);
     }
 
     private void decideNextActivity() {
-        SessionManager sessionManager = new SessionManager(this);
-        String phone = sessionManager.getUserPhone();
+        String phone = Utils.getUserPhoneNumber();
 
         if (phone != null) {
-            // Check if password is set in Firebase
             FirebaseDatabase.getInstance().getReference()
                     .child("AllUsers")
                     .child("User")
                     .child(phone)
                     .get()
                     .addOnSuccessListener(snapshot -> {
-                        Boolean isPasswordSet = snapshot.child("isPasswordSet").getValue(Boolean.class);
+                        if (snapshot.exists()) {
+                            Boolean isPasswordSet = snapshot.child("isPasswordSet").getValue(Boolean.class);
 
-                        if (isPasswordSet != null && isPasswordSet) {
-                            // Password is set → Go to MainActivity
-                            startActivity(new Intent(this, MainActivity.class));
+                            if (isPasswordSet != null && isPasswordSet) {
+                                // Password is set → Go to MainActivity
+                                startActivity(new Intent(this, MainActivity.class));
+                            } else {
+                                // Password not set → Go to PasswordActivity
+                                Intent intent = new Intent(this, PasswordActivity.class);
+                                intent.putExtra("phone", phone);
+                                startActivity(intent);
+                            }
                         } else {
-                            // Password not set → Go to PasswordActivity
-                            Intent intent = new Intent(this, PasswordActivity.class);
-                            intent.putExtra("phone", phone);
-                            startActivity(intent);
+                            // If no user found in DB → Go to AuthenticationActivity
+                            startActivity(new Intent(this, AuthenticationActivity.class));
                         }
                         finish();
                     })
                     .addOnFailureListener(e -> {
-                        // If any error occurs → Go to AuthenticationActivity
+                        // Any database error → Go to AuthenticationActivity
                         startActivity(new Intent(this, AuthenticationActivity.class));
                         finish();
                     });
         } else {
-            // No session → Go to AuthenticationActivity
+            // No phone stored → Go to AuthenticationActivity
             startActivity(new Intent(this, AuthenticationActivity.class));
             finish();
         }
     }
 }
+

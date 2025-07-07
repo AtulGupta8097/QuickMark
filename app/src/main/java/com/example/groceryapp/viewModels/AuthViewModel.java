@@ -33,7 +33,7 @@ public final class AuthViewModel extends ViewModel {
     public LiveData<Boolean> getLoginResult() { return loginResult; }
     public LiveData<String> getMessage() { return message; }
     public LiveData<Boolean> getPasswordSetResult() { return passwordSetResult; }
-    public LiveData<Boolean> getHasPassword() { return hasPassword; }   // <-- Added getter ✅
+    public LiveData<Boolean> getHasPassword() { return hasPassword; }
 
     // Send OTP to number
     public void sendOtp(String number, Activity activity) {
@@ -79,7 +79,6 @@ public final class AuthViewModel extends ViewModel {
         Utils.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        user.setUid(Utils.getUserId());
                         saveUserDataIfNotExists(user);
                     } else {
                         validOtp.setValue(false);
@@ -92,7 +91,6 @@ public final class AuthViewModel extends ViewModel {
                 });
     }
 
-    // Check if user exists — if not, create; and check password status
     private void saveUserDataIfNotExists(Users user) {
         FirebaseDatabase.getInstance().getReference()
                 .child("AllUsers")
@@ -105,15 +103,15 @@ public final class AuthViewModel extends ViewModel {
                         Boolean passwordSet = snapshot.child("isPasswordSet").getValue(Boolean.class);
                         hasPassword.setValue(passwordSet != null && passwordSet);
                     } else {
-                        user.setPasswordSet(false); // by default
+                        user.setPasswordSet(false); // <--- THIS is setting it in the Users object
                         FirebaseDatabase.getInstance().getReference()
                                 .child("AllUsers")
                                 .child("User")
                                 .child(user.getPhoneNumber())
-                                .setValue(user)
+                                .setValue(user)   // <--- here you push entire user object, including isPasswordSet
                                 .addOnSuccessListener(unused -> {
                                     message.setValue("User data saved successfully.");
-                                    hasPassword.setValue(false);  // new user
+                                    hasPassword.setValue(false);
                                 })
                                 .addOnFailureListener(e -> {
                                     message.setValue("Unable to save user data: " + e.getMessage());
@@ -127,6 +125,7 @@ public final class AuthViewModel extends ViewModel {
                     message.setValue("Failed to check user: " + e.getMessage());
                 });
     }
+
 
     // Login with phone+password check
     public void loginWithPhoneAndPassword(String phone, String password) {

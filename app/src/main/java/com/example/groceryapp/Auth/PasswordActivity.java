@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
-import com.example.groceryapp.SessionManager;
 import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivityPasswordBinding;
 import com.example.groceryapp.viewModels.AuthViewModel;
@@ -49,9 +48,8 @@ public class PasswordActivity extends AppCompatActivity {
             if (isSuccess == null) return;
 
             if (isSuccess) {
-                // Save session
-                SessionManager sessionManager = new SessionManager(this);
-                sessionManager.saveUserPhone(phoneNumber);
+                // Save session via Utils
+                Utils.setUserPhoneNumber(phoneNumber);
 
                 startActivity(new Intent(this, MainActivity.class));
                 finishAffinity();
