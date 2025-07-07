@@ -2,6 +2,7 @@ package com.example.groceryapp.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,7 @@ public class PasswordActivity extends AppCompatActivity {
     private ActivityPasswordBinding binding;
     private String phoneNumber;
     private AuthViewModel viewModel;
+    private static final String TAG = "PasswordActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,16 @@ public class PasswordActivity extends AppCompatActivity {
         String password = binding.passwordEd.getText().toString().trim();
         String confirmPassword = binding.confirmPasswordEd.getText().toString().trim();
 
+        Log.d(TAG, "Raw Password: [" + password + "]");
+        Log.d(TAG, "Raw Confirm: [" + confirmPassword + "]");
+
+        // Normalize (remove internal/external whitespace)
+        password = password.replaceAll("\\s+", "");
+        confirmPassword = confirmPassword.replaceAll("\\s+", "");
+
+        Log.d(TAG, "Normalized Password: [" + password + "]");
+        Log.d(TAG, "Normalized Confirm: [" + confirmPassword + "]");
+
         binding.passwordErrorText.setVisibility(View.GONE);
         binding.confirmPasswordErrorText.setVisibility(View.GONE);
 
@@ -98,7 +110,8 @@ public class PasswordActivity extends AppCompatActivity {
     }
 
     private boolean isValidPassword(String password) {
-        String passwordPattern = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
+        // No spaces allowed, at least 8 chars, 1 capital, 1 digit, 1 special
+        String passwordPattern = "^(?=\\S+$)(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
         return password.matches(passwordPattern);
     }
 }

@@ -11,9 +11,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.groceryapp.Auth.AuthenticationActivity;
+import com.example.groceryapp.Auth.PasswordActivity;
 import com.example.groceryapp.R;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.SessionManager;
 import com.example.groceryapp.databinding.ActivitySplashBinding;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SplashActivity extends AppCompatActivity {
     ActivitySplashBinding binding;
@@ -24,12 +26,14 @@ public class SplashActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Animation code
         binding.lottieView.setAnimation(R.raw.fruit_basket_animation);
         binding.lottieView.playAnimation();
 
@@ -62,17 +66,44 @@ public class SplashActivity extends AppCompatActivity {
                 .setDuration(600)
                 .start();
 
-        new Handler().postDelayed(() -> {
-            if (Utils.getCurrentUser() != null) {
-                // User is logged in → Go to MainActivity
-                startActivity(new Intent(this, MainActivity.class));
-            } else {
-                // No user session → Go to AuthenticationActivity
-                startActivity(new Intent(this, AuthenticationActivity.class));
-            }
-            finish();
-        }, 2000);
-
+        // Delay before routing to next screen
+        new Handler().postDelayed(this::decideNextActivity, 2000);
     }
 
+    private void decideNextActivity() {
+        SessionManager sessionManager = new SessionManager(this);
+        String phone = sessionManager.getUserPhone();
+
+        if (phone != null) {
+            // Check if password is set in Firebase
+            FirebaseDatabase.getInstance().getReference()
+                    .child("AllUsers")
+                    .child("User")
+                    .child(phone)
+                    .get()
+                    .addOnSuccessListener(snapshot -> {
+                        Boolean isPasswordSet = snapshot.child("isPasswordSet").getValue(Boolean.class);
+
+                        if (isPasswordSet != null && isPasswordSet) {
+                            // Password is set → Go to MainActivity
+                            startActivity(new Intent(this, MainActivity.class));
+                        } else {
+                            // Password not set → Go to PasswordActivity
+                            Intent intent = new Intent(this, PasswordActivity.class);
+                            intent.putExtra("phone", phone);
+                            startActivity(intent);
+                        }
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        // If any error occurs → Go to AuthenticationActivity
+                        startActivity(new Intent(this, AuthenticationActivity.class));
+                        finish();
+                    });
+        } else {
+            // No session → Go to AuthenticationActivity
+            startActivity(new Intent(this, AuthenticationActivity.class));
+            finish();
+        }
+    }
 }

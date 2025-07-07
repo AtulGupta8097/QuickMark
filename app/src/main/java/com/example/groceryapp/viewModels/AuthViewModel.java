@@ -29,7 +29,6 @@ public final class AuthViewModel extends ViewModel {
 
     // Expose LiveData
     public LiveData<Boolean> isOtpSend() { return codeSend; }
-    public LiveData<String> getVerificationId() { return verificationId; }
     public LiveData<Boolean> isValidOtp() { return validOtp; }
     public LiveData<Boolean> getLoginResult() { return loginResult; }
     public LiveData<String> getMessage() { return message; }

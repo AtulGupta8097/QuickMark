@@ -46,12 +46,6 @@ public final class Utils {
         return auth;
 
     }
-    public static FirebaseUser getCurrentUser(){
-        if(user==null){
-            user = FirebaseAuth.getInstance().getCurrentUser();
-        }
-        return user;
-    }
     public static String getUserId(){
         if(uid==null){
         uid = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();

@@ -95,32 +95,32 @@ public class OtpActivity extends AppCompatActivity {
         });
 
         viewModel.isValidOtp().observe(this, validOtp -> {
-            if (validOtp != null) {
-                Utils.hideDialog();
-                if (validOtp) {
-                    // OTP verified successfully, now check if user has a password set
-                    viewModel.getHasPassword().observe(this, hasPassword -> {
-                        if (hasPassword != null) {
-                            if (hasPassword) {
-                                // Existing user with password, log them in
-                                new com.example.groceryapp.SessionManager(this).saveUserPhone(number);
-                                Intent intent = new Intent(this, com.example.groceryapp.Activity.MainActivity.class);
-                                startActivity(intent);
-                                finishAffinity();
-                            } else {
-                                // New user or incomplete signup, go to PasswordActivity
-                                Intent intent = new Intent(this, PasswordActivity.class);
-                                intent.putExtra("phone", number);
-                                startActivity(intent);
-                                finishAffinity();
-                            }
-                        } else {
-                            Utils.showToast(this, "Failed to determine user status. Please retry.");
-                        }
-                    });
-                } else {
-                    Utils.showToast(this, "Invalid OTP, try again");
-                }
+            if (validOtp == null) return;
+
+            Utils.hideDialog();
+            if (validOtp) {
+                // OTP verified, now wait for hasPassword to be available
+                viewModel.getHasPassword().observe(this, hasPassword -> {
+                    if (hasPassword == null) {
+                        Utils.showToast(this, "Failed to determine user status. Please retry.");
+                        return;
+                    }
+
+                    // Save session
+                    new com.example.groceryapp.SessionManager(this).saveUserPhone(number);
+
+                    if (hasPassword) {
+                        startActivity(new Intent(this, com.example.groceryapp.Activity.MainActivity.class));
+                    } else {
+                        Intent intent = new Intent(this, PasswordActivity.class);
+                        intent.putExtra("phone", number);
+                        startActivity(intent);
+                    }
+
+                    finishAffinity();
+                });
+            } else {
+                Utils.showToast(this, "Invalid OTP, try again");
             }
         });
 
@@ -130,6 +130,7 @@ public class OtpActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void setUpOtpFields() {
