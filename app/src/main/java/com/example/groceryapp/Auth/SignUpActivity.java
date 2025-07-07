@@ -16,8 +16,6 @@ import com.example.groceryapp.R;
 import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivitySignUpBinding;
 
-import java.util.Objects;
-
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
 
@@ -42,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onBackBtnClicked() {
-        binding.backBtn.setOnClickListener(V->{
+        binding.backBtn.setOnClickListener(v -> {
             startActivity(new Intent(SignUpActivity.this, AuthenticationActivity.class));
             finishAffinity();
         });
@@ -51,50 +49,41 @@ public class SignUpActivity extends AppCompatActivity {
     private void changeNextBtnBackground() {
         binding.numberEd.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int len = s.length();
-                if(len==10) {
+                if (s.length() == 10) {
                     binding.nextBtn.setBackgroundResource(R.drawable.custom_green_btn);
                     binding.nextBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.white));
-                }
-                else{
+                } else {
                     binding.nextBtn.setBackgroundResource(R.drawable.custom_transparent_btn);
                     binding.nextBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.orange));
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) { }
         });
     }
 
     private void onLoginTextClicked() {
-        binding.loginText.setOnClickListener(V->{
+        binding.loginText.setOnClickListener(v -> {
             startActivity(new Intent(this, SignInActivity.class));
         });
     }
 
     private void onNextBtnClicked() {
-        binding.nextBtn.setOnClickListener(V->{
-            String number = Objects.requireNonNull(binding.numberEd.getText()).toString();
+        binding.nextBtn.setOnClickListener(v -> {
+            String number = binding.numberEd.getText().toString();
 
-            if (number.length() < 10) {
-                Utils.showToast(this, "Please enter 10 digit number");
-            } else if (number.length()>10) {
-                Utils.showToast(this,"Please enter valid number");
+            if (number.length() != 10) {
+                Utils.showToast(this, "Please enter a valid 10 digit number");
             } else {
                 Intent intent = new Intent(this, OtpActivity.class);
-                intent.putExtra("number", Objects.requireNonNull(binding.numberEd.getText()).toString());
+                intent.putExtra("number", number);
                 startActivity(intent);
             }
         });
-
     }
 }

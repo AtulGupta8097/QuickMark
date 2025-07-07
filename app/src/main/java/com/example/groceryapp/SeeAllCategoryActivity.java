@@ -1,7 +1,6 @@
 package com.example.groceryapp;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,22 +42,21 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
             return insets;
         });
 
-        categoryTitle = getIntent().getStringExtra("category");
-
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-
-        productAdapter = new ProductAdapter(new ProductListener() {
-            @Override
-            public void onAddBtnClicked(Product product, com.example.groceryapp.databinding.ProductDesignBinding binding) {}
-            @Override
-            public void onPlusBtnClicked(int count, Product product, com.example.groceryapp.databinding.ProductDesignBinding binding) {}
-            @Override
-            public void onMinusBtnClicked(int count, Product product, com.example.groceryapp.databinding.ProductDesignBinding binding) {}
-        });
-
-        binding.productRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        binding.productRecyclerView.setAdapter(productAdapter);
         userViewModel.fetchAllProducts();
+        getIntentContent();
+        setProductAdapter();
+        observeProduct();
+        setHeadingText();
+
+
+    }
+
+    private void setHeadingText() {
+        binding.toolbarTitle.setText(categoryTitle);
+    }
+
+    private void observeProduct() {
 
         userViewModel.getAllProducts().observe(this, products -> {
             if (products != null) {
@@ -68,13 +66,18 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
                         filteredProducts.add(p);
                     }
                 }
-                for(int i=0;i<filteredProducts.size();i++){
-                    Log.d("item",filteredProducts.get(i).getProductTitle());
-                }
                 productAdapter.submitList(filteredProducts);
             }
         });
 
-        binding.toolbarTitle.setText(categoryTitle);
+    }
+
+    private void setProductAdapter() {
+        productAdapter = new ProductAdapter(new BaseProductListener(userViewModel, this) {});
+        binding.productRecyclerView.setAdapter(productAdapter);
+    }
+
+    private void getIntentContent() {
+        categoryTitle = getIntent().getStringExtra("category");
     }
 }

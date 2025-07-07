@@ -27,16 +27,13 @@ import com.example.groceryapp.Activity.AddressActivity;
 import com.example.groceryapp.CategoryItem;
 import com.example.groceryapp.Constants;
 import com.example.groceryapp.Models.CategoryModel;
-import com.example.groceryapp.OnCategoryClickedListener;
 import com.example.groceryapp.R;
-import com.example.groceryapp.adapter.CategoriesAdapter;
 import com.example.groceryapp.adapter.HomeAdapter;
 import com.example.groceryapp.databinding.FragmentShopBinding;
 import com.example.groceryapp.viewModels.UserViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ShopFragment extends Fragment{
 FragmentShopBinding binding;
@@ -193,7 +190,7 @@ private ActivityResultLauncher<Intent> addressLauncher;
             Bundle bundle = new Bundle();
             bundle.putString("category", category);
             navController.navigate(R.id.action_ShopFragment_to_CategoryFragment, bundle);
-        });
+        }, userViewModel);
 
         binding.categoryRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.categoryRecycler.setAdapter(homeAdapter);

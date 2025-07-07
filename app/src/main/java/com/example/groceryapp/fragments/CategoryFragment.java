@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import com.example.groceryapp.BaseProductListener;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.ProductListener;
 import com.example.groceryapp.R;
@@ -51,7 +52,7 @@ public class CategoryFragment extends Fragment {
         retrieveCategoryProduct();
         setProductAdapter();
         showCategoryProduct();
-        observeCartChanges();  // 🔥 Observe cart changes immediately
+        observeCartChanges();
         onCategoryToolbarItemClicked();
 
         return binding.getRoot();
@@ -62,68 +63,7 @@ public class CategoryFragment extends Fragment {
     }
 
     private void setProductAdapter() {
-        productAdapter = new ProductAdapter(new ProductListener() {
-            @Override
-            public void onAddBtnClicked(Product product, ProductDesignBinding productBinding) {
-                productBinding.addProductBtn.setVisibility(View.GONE);
-                productBinding.llAddMinusBtn.setVisibility(View.VISIBLE);
-                onPlusBtnClicked(1, product, productBinding);
-            }
-
-            private void saveCartProductInDB(Product product) {
-                CartProduct cartProduct = new CartProduct(
-                        product.getProductId(),
-                        product.getProductTitle(),
-                        product.getProductCategory(),
-                        product.getProductImageUris().get(0),
-                        product.getProductQuantity() + product.getUnit(),
-                        product.getProductPrice(),
-                        product.getProductStock(),
-                        product.getItemCount(),
-                        product.getBuyCount(),
-                        product.getRatingCount(),
-                        product.getAverageRating()
-                );
-                if (cartProduct.getItemCount() > 1) {
-                    userViewModel.updateCartProduct(cartProduct);
-                } else {
-                    userViewModel.insertCartProduct(cartProduct);
-                }
-            }
-
-            @Override
-            public void onPlusBtnClicked(int item, Product product, ProductDesignBinding productBinding) {
-                int currentNumber = Integer.parseInt(productBinding.productNumbers.getText().toString());
-                int cartInc = currentNumber + item;
-
-                if (cartInc <= product.getProductStock()) {
-                    product.setItemCount(cartInc);
-                    productBinding.productNumbers.setText(String.valueOf(cartInc));
-                    userViewModel.setNumberOfCart(1);
-                    saveCartProductInDB(product);
-                    userViewModel.updateCartProductItemCount(product.getProductId(), cartInc);
-                } else {
-                    Utils.showToast(getContext(), "Currently we have only " + currentNumber + " item available");
-                }
-            }
-
-            @Override
-            public void onMinusBtnClicked(int item, Product product, ProductDesignBinding productBinding) {
-                int currentNumber = Integer.parseInt(productBinding.productNumbers.getText().toString());
-                int cartDec = currentNumber - item;
-                product.setItemCount(cartDec);
-                productBinding.productNumbers.setText(String.valueOf(cartDec));
-                userViewModel.setNumberOfCart(-1);
-                saveCartProductInDB(product);
-                userViewModel.updateCartProductItemCount(product.getProductId(), cartDec);
-
-                if (cartDec == 0) {
-                    productBinding.llAddMinusBtn.setVisibility(View.GONE);
-                    productBinding.addProductBtn.setVisibility(View.VISIBLE);
-                    userViewModel.deleteCartProduct(product.getProductId());
-                }
-            }
-        });
+        productAdapter = productAdapter = new ProductAdapter(new BaseProductListener(userViewModel, requireContext()) {});
 
         binding.categoryRecycler.setAdapter(productAdapter);
     }

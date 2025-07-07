@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void setupAdapter() {
-        homeAdapter = new HomeAdapter(null);
+        homeAdapter = new HomeAdapter(null,userViewModel);
         binding.searchDefaultCategoryRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.searchDefaultCategoryRecycler.setAdapter(homeAdapter);
     }

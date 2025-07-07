@@ -2,27 +2,26 @@ package com.example.groceryapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.groceryapp.BaseProductListener;
 import com.example.groceryapp.CategoryItem;
 import com.example.groceryapp.Models.CategoryModel;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.OnCategoryClickedListener;
-import com.example.groceryapp.ProductListener;
 import com.example.groceryapp.R;
 import com.example.groceryapp.SeeAllCategoryActivity;
-import com.example.groceryapp.databinding.ProductDesignBinding;
+import com.example.groceryapp.viewModels.UserViewModel;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +30,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final List<CategoryItem> items = new ArrayList<>();
     private final OnCategoryClickedListener categoryListener;
+    private final UserViewModel userViewModel;
 
-    public HomeAdapter(OnCategoryClickedListener listener) {
+    public HomeAdapter(OnCategoryClickedListener listener, UserViewModel userViewModel) {
         this.categoryListener = listener;
+        this.userViewModel = userViewModel;
     }
 
     public void submitList(List<CategoryItem> updatedItems) {
@@ -41,7 +42,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.items.addAll(updatedItems);
         notifyDataSetChanged();
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -103,64 +103,63 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public void setCategoryData(Context context, List<CategoryModel> categories, OnCategoryClickedListener listener) {
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 4);
-
-            // Important: Set SpanSizeLookup
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    // First item takes 2 spans, others take 1
                     return (position == 0) ? 2 : 1;
                 }
             });
-
             CategoriesAdapter adapter = new CategoriesAdapter(categories, listener);
             recyclerView.setLayoutManager(gridLayoutManager);
             recyclerView.setAdapter(adapter);
         }
-
     }
 
-    static class ProductGridViewHolder extends RecyclerView.ViewHolder {
+    // Product Grid ViewHolder — made NON-STATIC to access userViewModel directly
+    class ProductGridViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recyclerView;
         AppCompatButton seeAllBtn;
+        ShimmerFrameLayout shimmer;
 
         public ProductGridViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.categoryRecyclerView);
             seeAllBtn = itemView.findViewById(R.id.seeAllBtn);
+            shimmer = itemView.findViewById(R.id.shimmerEffect);
         }
 
         public void setProductData(Context context, List<Product> products) {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+            // Show shimmer while loading
+            shimmer.setVisibility(View.VISIBLE);
+            shimmer.startShimmer();
 
-            ProductAdapter adapter = new ProductAdapter(new ProductListener() {
-                @Override
-                public void onAddBtnClicked(Product product, ProductDesignBinding binding) {}
-                @Override
-                public void onPlusBtnClicked(int count, Product product, ProductDesignBinding binding) {}
-                @Override
-                public void onMinusBtnClicked(int count, Product product, ProductDesignBinding binding) {}
-            });
+            // Simulate loading delay — ideally you'd stop shimmer when actual data arrives from ViewModel
+            recyclerView.postDelayed(() -> {
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+                recyclerView.setLayoutManager(gridLayoutManager);
 
-            // Show only 6 items
-            List<Product> displayedProducts = products.size() > 6 ? products.subList(0, 6) : products;
-            adapter.submitList(displayedProducts);
-            recyclerView.setAdapter(adapter);
+                ProductAdapter adapter = new ProductAdapter(new BaseProductListener(userViewModel, context) {});
+                List<Product> displayedProducts = products.size() > 6 ? products.subList(0, 6) : products;
+                adapter.submitList(displayedProducts);
+                recyclerView.setAdapter(adapter);
 
-            // Show/hide See All button
-            if (products.size() > 6) {
-                seeAllBtn.setVisibility(View.VISIBLE);
-                seeAllBtn.setOnClickListener(v -> {
-                    Intent intent = new Intent(context, SeeAllCategoryActivity.class);
-                    intent.putExtra("category", products.get(0).getProductCategory());
-                    context.startActivity(intent);
-                });
+                // Hide shimmer after data is set
+                shimmer.stopShimmer();
+                shimmer.setVisibility(View.GONE);
 
-            } else {
-                seeAllBtn.setVisibility(View.GONE);
-            }
+                if (products.size() > 6) {
+                    seeAllBtn.setVisibility(View.VISIBLE);
+                    seeAllBtn.setOnClickListener(v -> {
+                        Intent intent = new Intent(context, SeeAllCategoryActivity.class);
+                        intent.putExtra("category", products.get(0).getProductCategory());
+                        context.startActivity(intent);
+                    });
+                } else {
+                    seeAllBtn.setVisibility(View.GONE);
+                }
+
+            }, 500); // Delay to simulate loading, or trigger this when your data is fetched
         }
-    }
 
+    }
 }
