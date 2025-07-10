@@ -15,12 +15,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.OrdersModel;
 import com.example.groceryapp.R;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.adapter.CartAdapter;
 import com.example.groceryapp.databinding.ActivityCartBinding;
 import com.example.groceryapp.databinding.CartItemDesignBinding;

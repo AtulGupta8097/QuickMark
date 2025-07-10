@@ -47,15 +47,16 @@
         </activity>
         <activity
             android:name=".Auth.SignInActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Auth.OtpActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
         <activity
             android:name=".Auth.SignUpActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".Auth.AuthenticationActivity"
             android:exported="false" />

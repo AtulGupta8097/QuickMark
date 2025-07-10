@@ -20,6 +20,22 @@
         android:layout_weight="1"
         android:background="@color/white">
 
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:elevation="4dp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:fontFamily="@font/poppins_bold"
+            android:padding="8dp"
+            android:text="Error message"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
         <ImageView
             android:id="@+id/backBtn"
             android:layout_width="@dimen/_24sdp"
@@ -35,11 +51,10 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/amaranth_bold"
+            android:fontFamily="@font/poppins_bold"
             android:text="Sign Up"
             android:textColor="@color/orange"
             android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/backBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,8 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
             android:text="We need to verify you. We will send you a one time verification code. "
-            android:fontFamily="@font/akshar"
-            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_10ssp"
             android:textColor="@color/orange_text"
             app:layout_constraintEnd_toEndOf="@id/textInputLayout"
             app:layout_constraintStart_toStartOf="@+id/textInputLayout"
@@ -113,7 +128,7 @@
             android:layout_height="@dimen/_42sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             android:background="@drawable/custom_transparent_btn"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/poppins"
             android:text="Next"
             android:textAllCaps="false"
             android:layout_marginBottom="@dimen/_8sdp"
@@ -138,16 +153,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/poppins"
                 android:text="Already have an account? "
                 android:textColor="@color/black"
-                android:textSize="@dimen/_14ssp" />
+                android:textSize="@dimen/_12ssp" />
 
             <TextView
                 android:id="@+id/signInText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/amaranth_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Login"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_12ssp" />

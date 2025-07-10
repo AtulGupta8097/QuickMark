@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.groceryapp.Models.Users;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.utils.Utils;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
@@ -22,6 +22,8 @@ public final class AuthViewModel extends ViewModel {
     private final MutableLiveData<String> verificationId = new MutableLiveData<>(null);
     private final MutableLiveData<Boolean> codeSend = new MutableLiveData<>();
     private final MutableLiveData<Boolean> validOtp = new MutableLiveData<>(null);
+    private final MutableLiveData<Boolean> userExists = new MutableLiveData<>();
+
     private final MutableLiveData<Boolean> loginResult = new MutableLiveData<>(null);
     private final MutableLiveData<String> message = new MutableLiveData<>();
     private final MutableLiveData<Boolean> passwordSetResult = new MutableLiveData<>(null);
@@ -90,6 +92,34 @@ public final class AuthViewModel extends ViewModel {
                     message.setValue("Sign-in Error: " + e.getMessage());
                 });
     }
+    public LiveData<Boolean> getUserExistsResult() { return userExists;
+    }
+
+    public void checkIfUserExists(String phone) {
+        if (phone.length() != 10) {
+            message.setValue("Please enter a valid 10-digit phone number.");
+            userExists.setValue(null);
+            return;
+        }
+
+        FirebaseDatabase.getInstance().getReference()
+                .child("AllUsers")
+                .child("User")
+                .child(phone)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot.exists()) {
+                        userExists.setValue(true);
+                    } else {
+                        userExists.setValue(false);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    message.setValue("Check failed: " + e.getMessage());
+                    userExists.setValue(null);
+                });
+    }
+
 
     private void saveUserDataIfNotExists(Users user) {
         FirebaseDatabase.getInstance().getReference()

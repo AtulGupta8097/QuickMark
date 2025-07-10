@@ -1,10 +1,10 @@
 package com.example.groceryapp;
-
 import android.content.Context;
 import android.view.View;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.databinding.ProductDesignBinding;
 import com.example.groceryapp.roomDatabase.CartProduct;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.UserViewModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

@@ -1,5 +1,6 @@
 package com.example.groceryapp.Auth;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
-import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivityPasswordBinding;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
 
 public class PasswordActivity extends AppCompatActivity {
@@ -62,6 +63,7 @@ public class PasswordActivity extends AppCompatActivity {
         binding.createPasswordBtn.setOnClickListener(v -> validateAndSavePassword());
     }
 
+    @SuppressLint("SetTextI18n")
     private void validateAndSavePassword() {
         String password = binding.passwordEd.getText().toString().trim();
         String confirmPassword = binding.confirmPasswordEd.getText().toString().trim();

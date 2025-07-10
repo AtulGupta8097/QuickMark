@@ -7,189 +7,202 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     tools:context=".Auth.OtpActivity">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="@dimen/_24sdp"
-            android:layout_height="@dimen/_24sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:src="@drawable/arrow"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/orange"
-            tools:ignore="ContentDescription" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:src="@drawable/arrow"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/orange"
+                tools:ignore="ContentDescription" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="Verification"
-            android:textColor="@color/orange"
-            android:textSize="@dimen/_16ssp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_220sdp"
-            android:layout_marginTop="@dimen/_24sdp"
-            android:src="@drawable/otp_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter Verification Code"
-            android:fontFamily="@font/roboto"
-            android:textSize="@dimen/_14ssp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginStart="@dimen/_16sdp"
-            android:textColor="@color/orange_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_6sdp"
-            android:text="We have sent SMS to:"
-            android:textColor="@color/orange_text"
-            android:fontFamily="@font/roboto"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-        <TextView
-            android:id="@+id/phoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/akshar"
-            android:text="Phone numberXXX"
-            android:textColor="@color/orange_text"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_42sdp"
-            android:layout_marginHorizontal="@dimen/_24sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:orientation="horizontal"
-            android:weightSum="6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneNumber">
-
-            <EditText
-                android:id="@+id/otpEd1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:inputType="number"
-                android:layout_weight="1"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Verification"
                 android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp" />
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
-            <EditText
-                android:id="@+id/otpEd2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp" />
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_260sdp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:src="@drawable/otp_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-            <EditText
-                android:id="@+id/otpEd3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Enter Verification Code"
+                android:textColor="@color/orange_text"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-            <EditText
-                android:id="@+id/otpEd4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="We have sent SMS to:"
+                android:textColor="@color/orange_text"
+                android:fontFamily="@font/poppins"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                tools:ignore="HardcodedText" />
 
-            <EditText
-                android:id="@+id/otpEd5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="Phone numberXXX"
+                android:textColor="@color/orange_text"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
+                tools:ignore="HardcodedText" />
 
-            <EditText
-                android:id="@+id/otpEd6"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:background="@drawable/custom_transparent_btn"
-                android:gravity="center"
-                android:maxLength="1"
-                android:textColor="@color/orange"
-                android:textSize="@dimen/_14sdp" />
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_42sdp"
+                android:layout_marginHorizontal="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:orientation="horizontal"
+                android:weightSum="6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumber">
 
-        </LinearLayout>
+                <EditText
+                    android:id="@+id/otpEd1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/otpEd2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/otpEd3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/otpEd4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/otpEd5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_14sdp" />
+
+                <EditText
+                    android:id="@+id/otpEd6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_transparent_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="@color/orange"
+                    android:textSize="@dimen/_14sdp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/verifyBtn"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_42sdp"
             android:background="@drawable/custom_green_btn"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_14ssp"
             android:text="Verify"
+            android:layout_marginBottom="@dimen/_26sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            android:textColor="@color/white" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </ScrollView>

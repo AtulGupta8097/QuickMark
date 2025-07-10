@@ -19,9 +19,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
 import com.example.groceryapp.R;
-import com.example.groceryapp.SessionManager;
-import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivitySignInBinding;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
 
 import java.util.Objects;

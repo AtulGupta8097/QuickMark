@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.example.groceryapp.Models.OrdersModel;
 import com.example.groceryapp.Models.Product;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.roomDatabase.CartProduct;
 import com.example.groceryapp.roomDatabase.CartProductDao;
 import com.example.groceryapp.roomDatabase.CartProductDatabase;

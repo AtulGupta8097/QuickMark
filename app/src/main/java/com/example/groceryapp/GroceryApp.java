@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStore;
 import androidx.lifecycle.ViewModelStoreOwner;
 
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.UserViewModel;
 
 public class GroceryApp extends Application implements ViewModelStoreOwner {

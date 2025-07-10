@@ -10,7 +10,7 @@ public class Users {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPhoneNumber() { return phoneNumber; }
+    public String getPhoneNumber() { return phoneNumber;}
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
     public boolean isPasswordSet() { return isPasswordSet; }

@@ -16,7 +16,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.R;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.databinding.ActivityMainBinding;
 import com.example.groceryapp.viewModels.UserViewModel;
 import com.google.android.material.badge.BadgeDrawable;

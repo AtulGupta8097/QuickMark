@@ -52,11 +52,10 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/amaranth_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Sign In"
                 android:textColor="@color/orange"
                 android:textSize="@dimen/_16ssp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/backBtn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -94,7 +93,7 @@
                     android:textSize="@dimen/_12ssp"
                     android:textColor="@color/black"
                     android:drawablePadding="@dimen/_9sdp"
-                    android:fontFamily="@font/roboto"
+                    android:fontFamily="@font/poppins"
                     android:drawableTint="@color/orange_text"
                     android:hint="Enter mobile number"
                     android:inputType="number"
@@ -126,7 +125,7 @@
                     android:textSize="@dimen/_12ssp"
                     android:textColor="@color/black"
                     android:drawablePadding="@dimen/_9sdp"
-                    android:fontFamily="@font/roboto"
+                    android:fontFamily="@font/poppins"
                     android:drawableTint="@color/orange_text"
                     android:hint="Enter password"
                     android:inputType="textPassword"
@@ -150,7 +149,7 @@
                 android:layout_marginHorizontal="@dimen/_24sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:background="@drawable/custom_green_btn"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/poppins"
                 android:text="Sign In"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -174,10 +173,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
+                    android:fontFamily="@font/poppins"
                     android:text="Don't have an accound? "
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <TextView
                     android:id="@+id/signInText"
@@ -186,7 +185,7 @@
                     android:fontFamily="@font/amaranth_bold"
                     android:text="Sign up"
                     android:textColor="@color/orange"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_14ssp" />
 
             </LinearLayout>
         </LinearLayout>

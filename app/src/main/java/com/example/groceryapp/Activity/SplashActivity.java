@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.groceryapp.Auth.AuthenticationActivity;
 import com.example.groceryapp.Auth.PasswordActivity;
 import com.example.groceryapp.R;
-import com.example.groceryapp.Utils;
+import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.databinding.ActivitySplashBinding;
 import com.google.firebase.database.FirebaseDatabase;
 

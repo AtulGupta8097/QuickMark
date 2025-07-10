@@ -1,4 +1,4 @@
-package com.example.groceryapp;
+package com.example.groceryapp.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
