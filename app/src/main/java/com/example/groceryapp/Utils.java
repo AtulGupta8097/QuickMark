@@ -2,7 +2,11 @@ package com.example.groceryapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.Toast;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -28,6 +32,43 @@ public final class Utils {
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+    public static void vibrate(Context context, int durationMillis) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null && vibrator.hasVibrator()) {
+            VibrationEffect effect = VibrationEffect.createOneShot(durationMillis, VibrationEffect.DEFAULT_AMPLITUDE);
+            vibrator.vibrate(effect);
+        }
+    }
+
+    public static void animateNumberChange(View view, boolean isIncrement) {
+        float fromYDelta = isIncrement ? -0.35f : 0.35f;
+        float toYDelta = 0f;
+
+        // Scale animation for a slight pop effect
+        ScaleAnimation scaleAnimation = new ScaleAnimation(
+                1f, 1.15f, 1f, 1.15f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+                ScaleAnimation.RELATIVE_TO_SELF, 0.5f
+        );
+        scaleAnimation.setDuration(120);
+        scaleAnimation.setRepeatCount(1);
+        scaleAnimation.setRepeatMode(ScaleAnimation.REVERSE);
+        view.startAnimation(scaleAnimation);
+
+        // Fade in during translation for smoothness
+        view.setAlpha(0.8f);
+        view.animate()
+                .translationYBy(fromYDelta * view.getHeight())
+                .alpha(1f)
+                .setDuration(90)
+                .withEndAction(() -> view.animate()
+                        .translationY(toYDelta)
+                        .setDuration(90)
+                        .start())
+                .start();
+    }
+
+
 
     public static void showDialog(Context context, String message) {
         ProgressDialogBinding progress = ProgressDialogBinding.inflate(LayoutInflater.from(context));

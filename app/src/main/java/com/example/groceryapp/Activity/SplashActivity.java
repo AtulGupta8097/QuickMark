@@ -1,5 +1,6 @@
 package com.example.groceryapp.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.groceryapp.Auth.AuthenticationActivity;
 import com.example.groceryapp.Auth.PasswordActivity;
 import com.example.groceryapp.R;
-import com.example.groceryapp.SessionManager;
 import com.example.groceryapp.Utils;
 import com.example.groceryapp.databinding.ActivitySplashBinding;
 import com.google.firebase.database.FirebaseDatabase;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
     ActivitySplashBinding binding;
 
@@ -68,7 +69,7 @@ public class SplashActivity extends AppCompatActivity {
                 .start();
 
         // Delay before routing to next screen
-        new Handler().postDelayed(this::decideNextActivity, 1300);
+        new Handler().postDelayed(this::decideNextActivity, 1600);
     }
 
     private void decideNextActivity() {

@@ -13,7 +13,7 @@ import com.example.groceryapp.R;
 public class AccountFragment extends Fragment {
 
     public AccountFragment() {
-        // Required empty public constructor
+
     }
 
     @Override

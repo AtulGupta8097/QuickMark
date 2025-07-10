@@ -19,9 +19,8 @@ import com.example.groceryapp.Models.CategoryModel;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.OnCategoryClickedListener;
 import com.example.groceryapp.R;
-import com.example.groceryapp.SeeAllCategoryActivity;
+import com.example.groceryapp.Activity.SeeAllCategoryActivity;
 import com.example.groceryapp.viewModels.UserViewModel;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,47 +118,35 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class ProductGridViewHolder extends RecyclerView.ViewHolder {
         RecyclerView recyclerView;
         AppCompatButton seeAllBtn;
-        ShimmerFrameLayout shimmer;
 
         public ProductGridViewHolder(View itemView) {
             super(itemView);
             recyclerView = itemView.findViewById(R.id.categoryRecyclerView);
             seeAllBtn = itemView.findViewById(R.id.seeAllBtn);
-            shimmer = itemView.findViewById(R.id.shimmerEffect);
         }
 
         public void setProductData(Context context, List<Product> products) {
-            // Show shimmer while loading
-            shimmer.setVisibility(View.VISIBLE);
-            shimmer.startShimmer();
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
+            recyclerView.setLayoutManager(gridLayoutManager);
 
-            // Simulate loading delay — ideally you'd stop shimmer when actual data arrives from ViewModel
-            recyclerView.postDelayed(() -> {
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
-                recyclerView.setLayoutManager(gridLayoutManager);
+            ProductAdapter adapter = new ProductAdapter(new BaseProductListener(userViewModel, context) {});
+            List<Product> displayedProducts = products.size() > 6 ? products.subList(0, 6) : products;
+            adapter.submitList(displayedProducts);
+            recyclerView.setAdapter(adapter);
 
-                ProductAdapter adapter = new ProductAdapter(new BaseProductListener(userViewModel, context) {});
-                List<Product> displayedProducts = products.size() > 6 ? products.subList(0, 6) : products;
-                adapter.submitList(displayedProducts);
-                recyclerView.setAdapter(adapter);
 
-                // Hide shimmer after data is set
-                shimmer.stopShimmer();
-                shimmer.setVisibility(View.GONE);
-
-                if (products.size() > 6) {
-                    seeAllBtn.setVisibility(View.VISIBLE);
-                    seeAllBtn.setOnClickListener(v -> {
-                        Intent intent = new Intent(context, SeeAllCategoryActivity.class);
-                        intent.putExtra("category", products.get(0).getProductCategory());
-                        context.startActivity(intent);
-                    });
-                } else {
-                    seeAllBtn.setVisibility(View.GONE);
-                }
-
-            }, 500); // Delay to simulate loading, or trigger this when your data is fetched
+            if (products.size() > 6) {
+                seeAllBtn.setVisibility(View.VISIBLE);
+                seeAllBtn.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, SeeAllCategoryActivity.class);
+                    intent.putExtra("category", products.get(0).getProductCategory());
+                    context.startActivity(intent);
+                });
+            } else {
+                seeAllBtn.setVisibility(View.GONE);
+            }
         }
+
 
     }
 }

@@ -1,4 +1,4 @@
-package com.example.groceryapp;
+package com.example.groceryapp.Activity;
 
 import android.os.Bundle;
 
@@ -7,11 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.example.groceryapp.BaseProductListener;
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.Product;
-import com.example.groceryapp.ProductListener;
+import com.example.groceryapp.R;
 import com.example.groceryapp.adapter.ProductAdapter;
 import com.example.groceryapp.databinding.ActivitySeeAllCategoryBinding;
 import com.example.groceryapp.viewModels.UserViewModel;
@@ -24,7 +24,7 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
     private ActivitySeeAllCategoryBinding binding;
     private ProductAdapter productAdapter;
     private UserViewModel userViewModel;
-    private List<Product> filteredProducts = new ArrayList<>();
+    private final List<Product> filteredProducts = new ArrayList<>();
     private String categoryTitle;
 
     @Override
@@ -42,14 +42,16 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
             return insets;
         });
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.fetchAllProducts();
+        userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
         getIntentContent();
+        setHeadingText();
         setProductAdapter();
         observeProduct();
-        setHeadingText();
 
-
+        // 🔥 Only fetch if cache is empty
+        if (!userViewModel.isAllProductsCached()) {
+            userViewModel.fetchAllProductsRealtime();
+        }
     }
 
     private void setHeadingText() {
@@ -57,7 +59,6 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
     }
 
     private void observeProduct() {
-
         userViewModel.getAllProducts().observe(this, products -> {
             if (products != null) {
                 filteredProducts.clear();
@@ -69,7 +70,6 @@ public class SeeAllCategoryActivity extends AppCompatActivity {
                 productAdapter.submitList(filteredProducts);
             }
         });
-
     }
 
     private void setProductAdapter() {

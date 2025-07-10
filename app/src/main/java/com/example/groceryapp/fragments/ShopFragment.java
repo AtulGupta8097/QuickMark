@@ -26,6 +26,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.groceryapp.Activity.AddressActivity;
 import com.example.groceryapp.CategoryItem;
 import com.example.groceryapp.Constants;
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.CategoryModel;
 import com.example.groceryapp.R;
 import com.example.groceryapp.adapter.HomeAdapter;
@@ -58,7 +59,7 @@ private ActivityResultLauncher<Intent> addressLauncher;
                 R.raw.dilevered_animation,
                 R.raw.celebration_animation
         };
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel = ((GroceryApp) requireActivity().getApplication()).getUserViewModel();
         navController = NavHostFragment.findNavController(this);
 
     }

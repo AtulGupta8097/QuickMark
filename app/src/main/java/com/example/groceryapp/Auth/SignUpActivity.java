@@ -54,11 +54,11 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 10) {
-                    binding.nextBtn.setBackgroundResource(R.drawable.custom_green_btn);
-                    binding.nextBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.white));
+                    binding.signInBtn.setBackgroundResource(R.drawable.custom_green_btn);
+                    binding.signInBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.white));
                 } else {
-                    binding.nextBtn.setBackgroundResource(R.drawable.custom_transparent_btn);
-                    binding.nextBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.orange));
+                    binding.signInBtn.setBackgroundResource(R.drawable.custom_transparent_btn);
+                    binding.signInBtn.setTextColor(ContextCompat.getColor(SignUpActivity.this, R.color.orange));
                 }
             }
 
@@ -68,13 +68,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onLoginTextClicked() {
-        binding.loginText.setOnClickListener(v -> {
+        binding.signInText.setOnClickListener(v -> {
             startActivity(new Intent(this, SignInActivity.class));
         });
     }
 
     private void onNextBtnClicked() {
-        binding.nextBtn.setOnClickListener(v -> {
+        binding.signInBtn.setOnClickListener(v -> {
             String number = binding.numberEd.getText().toString();
 
             if (number.length() != 10) {

@@ -1,6 +1,7 @@
 package com.example.groceryapp.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.groceryapp.CategoryItem;
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.R;
 import com.example.groceryapp.adapter.HomeAdapter;
@@ -39,24 +41,25 @@ public class SearchFragment extends Fragment {
         window.setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.white));
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
-        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        userViewModel = ((GroceryApp) requireActivity().getApplication()).getUserViewModel();
 
-        userViewModel.fetchAllProducts();
         setupAdapter();
-        observeAllProduct();
         onBackArrowClicked();
+
+        showShimmer();
+
+        userViewModel.fetchAllProductsRealtime();
+        observeAllProduct();
 
         return binding.getRoot();
     }
 
     private void onBackArrowClicked() {
-        binding.backArrow.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
+        binding.backArrow.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void setupAdapter() {
-        homeAdapter = new HomeAdapter(null,userViewModel);
+        homeAdapter = new HomeAdapter(null, userViewModel);
         binding.searchDefaultCategoryRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.searchDefaultCategoryRecycler.setAdapter(homeAdapter);
     }
@@ -64,6 +67,8 @@ public class SearchFragment extends Fragment {
     private void observeAllProduct() {
         userViewModel.getAllProducts().observe(getViewLifecycleOwner(), products -> {
             if (products != null && !products.isEmpty()) {
+                hideShimmer();
+
                 allProducts.clear();
                 allProducts.addAll(products);
 
@@ -98,6 +103,18 @@ public class SearchFragment extends Fragment {
         }
 
         homeAdapter.submitList(categoryItems);
+    }
+
+    private void showShimmer() {
+        binding.shimmerLayout.setVisibility(View.VISIBLE);
+        binding.shimmerLayout.startShimmer();
+        binding.searchDefaultCategoryRecycler.setVisibility(View.GONE);
+    }
+
+    private void hideShimmer() {
+        binding.shimmerLayout.stopShimmer();
+        binding.shimmerLayout.setVisibility(View.GONE);
+        binding.searchDefaultCategoryRecycler.setVisibility(View.VISIBLE);
     }
 
     @Override

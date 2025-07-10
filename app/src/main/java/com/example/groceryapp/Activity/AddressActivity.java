@@ -22,6 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.R;
 import com.example.groceryapp.databinding.ActivityAddressBinding;
 import com.example.groceryapp.viewModels.UserViewModel;
@@ -76,7 +77,7 @@ public class AddressActivity extends AppCompatActivity {
 
         // Initialize fused location client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
 
         // Activity result launcher (fixed shadowing)
         addressIntent = registerForActivityResult(

@@ -108,7 +108,7 @@
         android:layout_marginVertical="@dimen/_8sdp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/nextBtn"
+            android:id="@+id/signIn_Btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_42sdp"
             android:layout_marginHorizontal="@dimen/_24sdp"
@@ -132,8 +132,8 @@
             android:layout_marginBottom="@dimen/_16sdp"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/nextBtn"
-            app:layout_constraintStart_toStartOf="@+id/nextBtn">
+            app:layout_constraintEnd_toEndOf="@+id/signIn_Btn"
+            app:layout_constraintStart_toStartOf="@+id/signIn_Btn">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
                 android:textSize="@dimen/_14ssp" />
 
             <TextView
-                android:id="@+id/loginText"
+                android:id="@+id/signInText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/amaranth_bold"

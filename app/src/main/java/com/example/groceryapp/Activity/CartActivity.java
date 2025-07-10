@@ -2,6 +2,7 @@ package com.example.groceryapp.Activity;
 
 import static java.lang.String.valueOf;
 
+import android.annotation.SuppressLint;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.OrdersModel;
 import com.example.groceryapp.R;
 import com.example.groceryapp.Utils;
@@ -51,7 +53,8 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
+
 
         Window window = this.getWindow();
         window.setStatusBarColor(getResources().getColor(R.color.white, getApplicationContext().getTheme()));
@@ -134,7 +137,14 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
                             cartProduct.getAverageRating()
                     );
                     cartBinding.productNumbers.setText(valueOf(cartInc));
-                    userViewModel.setNumberOfCart(1);
+                    Utils.animateNumberChange(cartBinding.productNumbers, true);
+                    Utils.vibrate(CartActivity.this, 50);
+
+
+                    Integer badgeCurrent = userViewModel.getBadgeCartCount().getValue();
+                    badgeCurrent = badgeCurrent != null ? badgeCurrent : 0;
+                    userViewModel.setBadgeCartCount(badgeCurrent + 1);
+
                     saveCartProductInDB(updatedProduct);
                     userViewModel.updateCartProductItemCount(cartProduct.getProductId(), cartInc);
                 } else {
@@ -162,7 +172,14 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
                             cartProduct.getAverageRating()
                     );
                     cartBinding.productNumbers.setText(valueOf(cartDec));
-                    userViewModel.setNumberOfCart(-1);
+                    Utils.animateNumberChange(cartBinding.productNumbers, false);
+                    Utils.vibrate(CartActivity.this, 50);
+
+
+                    Integer badgeCurrent = userViewModel.getBadgeCartCount().getValue();
+                    badgeCurrent = badgeCurrent != null ? badgeCurrent : 0;
+                    userViewModel.setBadgeCartCount(Math.max(badgeCurrent - 1, 0));
+
                     saveCartProductInDB(updatedProduct);
                     userViewModel.updateCartProductItemCount(cartProduct.getProductId(), cartDec);
 
@@ -180,6 +197,10 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
         binding.cartRecycler.setAdapter(cartAdapter);
     }
 
+
+
+
+    @SuppressLint("DefaultLocale")
     private void updateCartTotal(List<CartProduct> cartProducts) {
         if(!cartProducts.isEmpty()){
             binding.noCartCv.setVisibility(View.GONE);
@@ -201,16 +222,17 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
         for (CartProduct product : cartProducts) {
             total += product.getProductPrice() * product.getItemCount();
         }
+        binding.itemTotal.setText(String.valueOf(total));
         if(total<250){
             deliveryCharge = 45;
             toPay = total+deliveryCharge;
-            binding.cancelDileveryFee.setText(String.format("₹%d",deliveryCharge));
+            binding.cancelDileveryFee.setPaintFlags(0);
             binding.dileveryFee.setVisibility(View.GONE);
+            binding.cancelDileveryFee.setText(String.format("₹%d",deliveryCharge));
         }
         else{
             toPay = total;
             binding.dileveryFee.setVisibility(View.VISIBLE);
-            binding.itemTotal.setText(String.valueOf(toPay));
             binding.cancelDileveryFee.setPaintFlags(binding.cancelDileveryFee.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             binding.cancelDileveryFee.setTextColor(getResources().getColor(R.color.dark_grey, this.getTheme()));
             binding.dileveryFee.setText(String.format("₹%d", deliveryCharge));
@@ -219,19 +241,23 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
     }
 
 
-        @Override
-        public void onPaymentSuccess(String s) {
-            Utils.observeOnce(userViewModel.getCartProducts(), this, cartProducts -> {
-                for (CartProduct product : cartProducts) {
-                    userViewModel.increaseBuyCountInFirebase(product,product.getItemCount());
-                }
+    @Override
+    public void onPaymentSuccess(String s) {
+           userViewModel.resetProductsAndCartBadge();
+        Utils.observeOnce(userViewModel.getCartProducts(), this, cartProducts -> {
+            for (CartProduct product : cartProducts) {
+                userViewModel.increaseBuyCountInFirebase(product, product.getItemCount());
+            }
 
-                saveOrder();
-                userViewModel.deleteAllCartProductFromRoomDB();
-                userViewModel.deleteCartProductFromFirebaseDb();
-                Utils.showToast(this, "Payment Success");
-            });
-        }
+            saveOrder();
+            userViewModel.deleteAllCartProductFromRoomDB();
+            userViewModel.deleteCartProductFromFirebaseDb();
+
+
+            Utils.showToast(this, "Payment Success");
+            finish(); // optional: close CartActivity after payment
+        });
+    }
 
 
     private void saveOrder() {

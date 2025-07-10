@@ -82,7 +82,7 @@
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/minusBtn"
                         android:layout_width="@dimen/_9sdp"
-                        android:layout_height="@dimen/_9sdp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerInside"
                         android:src="@drawable/minus"
@@ -101,7 +101,7 @@
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/plusBtn"
                         android:layout_width="@dimen/_9sdp"
-                        android:layout_height="@dimen/_9sdp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:src="@drawable/plus"
                         android:scaleType="centerInside"

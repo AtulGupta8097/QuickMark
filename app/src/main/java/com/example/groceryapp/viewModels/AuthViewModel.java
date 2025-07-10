@@ -151,7 +151,6 @@ public final class AuthViewModel extends ViewModel {
 
                         String storedPassword = snapshot.child("password").getValue(String.class);
                         if (storedPassword != null && storedPassword.equals(password)) {
-                            message.setValue("Login successful.");
                             loginResult.setValue(true);
                         } else {
                             message.setValue("Incorrect password.");
