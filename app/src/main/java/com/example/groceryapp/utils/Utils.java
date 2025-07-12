@@ -13,7 +13,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.databinding.ProgressDialogBinding;
+import com.example.groceryapp.roomDatabase.CartProduct;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.UUID;
@@ -32,6 +34,22 @@ public final class Utils {
     public static void showToast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
+    public static CartProduct productToCartProduct(Product product) {
+        return new CartProduct(
+                product.getProductId(),
+                product.getProductTitle(),
+                product.getProductCategory(),
+                product.getProductImageUris().get(0),
+                String.valueOf((product.getProductQuantity() + product.getUnit())),
+                product.getProductPrice(),
+                product.getProductStock(),
+                product.getItemCount(),
+                product.getBuyCount(),
+                product.getRatingCount(),
+                product.getAverageRating()
+        );
+    }
+
     public static void vibrate(Context context, int durationMillis) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator != null && vibrator.hasVibrator()) {

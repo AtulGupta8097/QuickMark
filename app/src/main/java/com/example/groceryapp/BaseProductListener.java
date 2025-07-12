@@ -1,5 +1,6 @@
 package com.example.groceryapp;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.databinding.ProductDesignBinding;
@@ -17,6 +18,7 @@ public abstract class BaseProductListener implements ProductListener {
     public BaseProductListener(UserViewModel userViewModel, Context context) {
         this.userViewModel = userViewModel;
         this.context = context;
+
     }
 
     @Override
@@ -55,7 +57,9 @@ public abstract class BaseProductListener implements ProductListener {
                 userViewModel.setBadgeCartCount(badgeCurrent + increment);
 
                 saveCartProductInDB(product);
-                userViewModel.updateCartProductItemCount(product.getProductId(), newCount);
+                Log.d("error",Utils.productToCartProduct(product).toString());
+
+                userViewModel.updateCartProductItem(Utils.productToCartProduct(product));
             } else {
                 Utils.showToast(context, "Currently we have only " + product.getProductStock() + " items available.");
             }
@@ -79,13 +83,19 @@ public abstract class BaseProductListener implements ProductListener {
             userViewModel.setBadgeCartCount(Math.max(badgeCurrent - 1, 0));
 
             saveCartProductInDB(product);
-            userViewModel.updateCartProductItemCount(product.getProductId(), cartDec);
+            Log.d("error",Utils.productToCartProduct(product).toString());
+            userViewModel.updateCartProductItem(Utils.productToCartProduct(product));
 
-            if (cartDec == 0) {
-                binding.llAddMinusBtn.setVisibility(View.GONE);
-                binding.addProductBtn.setVisibility(View.VISIBLE);
-                userViewModel.deleteCartProduct(product.getProductId());
-            }
+                if (cartDec == 0) {
+                    binding.llAddMinusBtn.setVisibility(View.GONE);
+                    binding.addProductBtn.setVisibility(View.VISIBLE);
+                    userViewModel.deleteCartProduct(product.getProductId());
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("Admins").child("AdminInfo").child("userCarts")
+                            .child(Utils.getUserPhoneNumber())
+                            .child(product.getProductId())
+                            .removeValue();
+                }
         }
     }
 

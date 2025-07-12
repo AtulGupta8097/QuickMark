@@ -1,6 +1,7 @@
 package com.example.groceryapp.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
@@ -164,6 +165,7 @@ public class AddressActivity extends AppCompatActivity {
         settingsClient.checkLocationSettings(settingsRequest)
                 .addOnSuccessListener(locationSettingsResponse -> {
                     fusedLocationClient.requestLocationUpdates(locationRequest, new LocationCallback() {
+                        @SuppressLint("SetTextI18n")
                         @Override
                         public void onLocationResult(@NonNull LocationResult locationResult) {
                             fusedLocationClient.removeLocationUpdates(this);

@@ -27,10 +27,10 @@ public final class AuthViewModel extends ViewModel {
     private final MutableLiveData<Boolean> loginResult = new MutableLiveData<>(null);
     private final MutableLiveData<String> message = new MutableLiveData<>();
     private final MutableLiveData<Boolean> passwordSetResult = new MutableLiveData<>(null);
-    private final MutableLiveData<Boolean> hasPassword = new MutableLiveData<>(null);  // <-- Added this ✅
+    private final MutableLiveData<Boolean> hasPassword = new MutableLiveData<>(null);
 
     // Expose LiveData
-    public LiveData<Boolean> isOtpSend() { return codeSend; }
+    public LiveData<Boolean> isOtpSend() { return codeSend;}
     public LiveData<Boolean> isValidOtp() { return validOtp; }
     public LiveData<Boolean> getLoginResult() { return loginResult; }
     public LiveData<String> getMessage() { return message; }

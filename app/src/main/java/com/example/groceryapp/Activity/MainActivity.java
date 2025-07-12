@@ -86,13 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void getUserAddress() {
         String address = userViewModel.getUserAddressFromPref();
-        if (address.equals("Not found")) {
-            userViewModel.getUserAddressFromFirebase().observe(this, userAddress -> {
-                if (userAddress != null && !userAddress.equals("Not found")) {
-                    userViewModel.saveUserAddressInPref(userAddress);
-                }
-            });
-        }
     }
 
     private void setupCartBadgeObserver() {

@@ -3,8 +3,9 @@ package com.example.groceryapp.Auth;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,19 +13,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.groceryapp.Activity.MainActivity;
+import com.example.groceryapp.R;
 import com.example.groceryapp.databinding.ActivityPasswordBinding;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
+
+import java.util.Objects;
 
 public class PasswordActivity extends AppCompatActivity {
 
     private ActivityPasswordBinding binding;
     private String phoneNumber;
     private AuthViewModel viewModel;
-    private static final String TAG = "PasswordActivity";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,63 +44,58 @@ public class PasswordActivity extends AppCompatActivity {
 
         phoneNumber = getIntent().getStringExtra("phone");
 
-        // Observe password result
         viewModel.getPasswordSetResult().observe(this, isSuccess -> {
             Utils.hideDialog();
             if (isSuccess == null) return;
 
             if (isSuccess) {
-                // Save session via Utils
                 Utils.setUserPhoneNumber(phoneNumber);
-
                 startActivity(new Intent(this, MainActivity.class));
                 finishAffinity();
             } else {
-                binding.passwordErrorText.setText(viewModel.getMessage().getValue());
-                binding.passwordErrorText.setVisibility(View.VISIBLE);
+                String message = viewModel.getMessage().getValue();
+                if (message != null && !message.isEmpty()) {
+                    binding.passwordInputLayout.setError(message);
+                    animateField(binding.passwordInputLayout);
+                }
             }
         });
+
 
         binding.createPasswordBtn.setOnClickListener(v -> validateAndSavePassword());
     }
 
     @SuppressLint("SetTextI18n")
     private void validateAndSavePassword() {
-        String password = binding.passwordEd.getText().toString().trim();
-        String confirmPassword = binding.confirmPasswordEd.getText().toString().trim();
+        String password = Objects.requireNonNull(binding.passwordEd.getText()).toString().trim();
+        String confirmPassword = Objects.requireNonNull(binding.confirmPasswordEd.getText()).toString().trim();
 
-        Log.d(TAG, "Raw Password: [" + password + "]");
-        Log.d(TAG, "Raw Confirm: [" + confirmPassword + "]");
-
-        // Normalize (remove internal/external whitespace)
         password = password.replaceAll("\\s+", "");
         confirmPassword = confirmPassword.replaceAll("\\s+", "");
 
-        Log.d(TAG, "Normalized Password: [" + password + "]");
-        Log.d(TAG, "Normalized Confirm: [" + confirmPassword + "]");
-
-        binding.passwordErrorText.setVisibility(View.GONE);
-        binding.confirmPasswordErrorText.setVisibility(View.GONE);
+        // clear previous errors
+        binding.passwordInputLayout.setError(null);
+        binding.confirmPasswordInputLayout.setError(null);
 
         boolean hasError = false;
 
         if (password.isEmpty()) {
-            binding.passwordErrorText.setText("Please enter a password");
-            binding.passwordErrorText.setVisibility(View.VISIBLE);
+            binding.passwordInputLayout.setError("Please enter a password");
+            animateField(binding.passwordInputLayout);
             hasError = true;
         } else if (!isValidPassword(password)) {
-            binding.passwordErrorText.setText("Password must be at least 8 characters with 1 capital letter, 1 number, and 1 special character.");
-            binding.passwordErrorText.setVisibility(View.VISIBLE);
+            binding.passwordInputLayout.setError("At least 8 characters, 1 capital, 1 number, 1 special");
+            animateField(binding.passwordInputLayout);
             hasError = true;
         }
 
         if (confirmPassword.isEmpty()) {
-            binding.confirmPasswordErrorText.setText("Please confirm your password");
-            binding.confirmPasswordErrorText.setVisibility(View.VISIBLE);
+            binding.confirmPasswordInputLayout.setError("Please confirm your password");
+            animateField(binding.confirmPasswordInputLayout);
             hasError = true;
         } else if (!confirmPassword.equals(password)) {
-            binding.confirmPasswordErrorText.setText("Passwords do not match");
-            binding.confirmPasswordErrorText.setVisibility(View.VISIBLE);
+            binding.confirmPasswordInputLayout.setError("Passwords do not match");
+            animateField(binding.confirmPasswordInputLayout);
             hasError = true;
         }
 
@@ -109,9 +105,16 @@ public class PasswordActivity extends AppCompatActivity {
         viewModel.setPasswordForUser(phoneNumber, password);
     }
 
+
+
     private boolean isValidPassword(String password) {
         // No spaces allowed, at least 8 chars, 1 capital, 1 digit, 1 special
         String passwordPattern = "^(?=\\S+$)(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{8,}$";
         return password.matches(passwordPattern);
     }
+    private void animateField(View view) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        view.startAnimation(shake);
+    }
+
 }

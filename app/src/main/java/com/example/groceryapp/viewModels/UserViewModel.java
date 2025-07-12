@@ -144,10 +144,16 @@ public class UserViewModel extends AndroidViewModel {
                     for (DataSnapshot snap : productSnap.getChildren()) {
                         Product p = snap.getValue(Product.class);
                         if (p != null) {
-                            int count = cartSnap.hasChild(p.getProductId())
-                                    ? cartSnap.child(p.getProductId()).child("itemCount").getValue(Integer.class)
-                                    : 0;
-                            p.setItemCount(count);
+                            if(cartSnap.hasChild(p.getProductId())){
+                                CartProduct product = cartSnap.child(p.getProductId()).getValue(CartProduct.class);
+                                assert product != null;
+                                int count = product.getItemCount();
+                                p.setItemCount(count);
+
+                            }
+                            else{
+                                p.setItemCount(0);
+                            }
                             productCache.put(p.getProductId(), p);
                             productList.add(p);
                         }
@@ -188,6 +194,60 @@ public class UserViewModel extends AndroidViewModel {
         setCartCountToZero();
     }
 
+    // Add this method at the end of your UserViewModel class before the closing bracket
+
+    public void recoverUserDataFromFirebase(Runnable onComplete) {
+        String phone = getCurrentPhone();
+        if (phone == null) {
+            onComplete.run();
+            return;
+        }
+
+        DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
+                .child("Admins").child("AdminInfo").child("userCarts").child(phone);
+        DatabaseReference addressRef = FirebaseDatabase.getInstance().getReference()
+                .child("AllUsers").child("User").child("UserAddress").child(phone);
+
+        // Clear existing Room cart before recovery
+//        deleteAllCartProductFromRoomDB();
+
+        // Fetch cart products
+        cartRef.get().addOnSuccessListener(cartSnapshot -> {
+            int totalCount = 0;
+            for (DataSnapshot child : cartSnapshot.getChildren()) {
+                CartProduct cartProduct = child.getValue(CartProduct.class);
+                if (cartProduct != null) {
+                    insertCartProduct(cartProduct);
+                    totalCount += cartProduct.getItemCount();
+                }
+            }
+            // Update badge count LiveData and preference
+            badgeCartCount.postValue(totalCount);
+            cartSharedPreferences.edit().putInt("cartCount", totalCount).apply();
+
+            // Now fetch address after cart recovery
+            addressRef.get().addOnSuccessListener(addressSnapshot -> {
+                String address = addressSnapshot.exists() ? addressSnapshot.getValue(String.class) : "Not found";
+                userAddressFirebase.setValue(address);
+                saveUserAddressInPref(address);
+                onComplete.run(); // Done with both
+
+            }).addOnFailureListener(e -> {
+                Log.e("RecoverUserData", "Failed to fetch address: " + e.getMessage());
+                userAddressFirebase.setValue("Not found");
+                saveUserAddressInPref("Not found");
+                onComplete.run();
+            });
+
+        }).addOnFailureListener(e -> {
+            Log.e("RecoverUserData", "Failed to recover cart: " + e.getMessage());
+            userAddressFirebase.setValue("Not found");
+            saveUserAddressInPref("Not found");
+            badgeCartCount.postValue(0);
+            cartSharedPreferences.edit().putInt("cartCount", 0).apply();
+            onComplete.run();
+        });
+    }
 
     public void syncCartToPreferences(String phone) {
         if (phone == null) return;
@@ -210,16 +270,17 @@ public class UserViewModel extends AndroidViewModel {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
-
-
-
-    public void updateCartProductItemCount(String productId, int count) {
+    public void updateCartProductItem(CartProduct product) {
         String phone = getCurrentPhone();
         if (phone == null) return;
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
-                .child("Admins").child("AdminInfo").child("userCarts").child(phone);
-        ref.child(productId).child("itemCount").setValue(count);
+                .child("Admins").child("AdminInfo").child("userCarts")
+                .child(phone)
+                .child(product.getProductId());
+        ref.setValue(product);
     }
+
 
     public void deleteCartProductFromFirebaseDb() {
         String phone = getCurrentPhone();
@@ -235,30 +296,6 @@ public class UserViewModel extends AndroidViewModel {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
                 .child("AllUsers").child("User").child("UserAddress").child(phone);
         ref.setValue(address);
-    }
-
-    public LiveData<String> getUserAddressFromFirebase() {
-        if (userAddressFirebase.getValue() == null) fetchUserAddressFromFirebase();
-        return userAddressFirebase;
-    }
-
-    private void fetchUserAddressFromFirebase() {
-        String phone = getCurrentPhone();
-        if (phone == null) {
-            userAddressFirebase.setValue("Not found");
-            return;
-        }
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
-                .child("AllUsers").child("User").child("UserAddress").child(phone);
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userAddressFirebase.setValue(snapshot.exists() ? snapshot.getValue(String.class) : "Not found");
-            }
-            @Override public void onCancelled(@NonNull DatabaseError error) {
-                userAddressFirebase.setValue("Not found");
-            }
-        });
     }
 
     public void saveOrder(OrdersModel order) {
@@ -319,4 +356,5 @@ public class UserViewModel extends AndroidViewModel {
     public String getCachedUserAddress() {
         return userAddressFirebase.getValue() != null ? userAddressFirebase.getValue() : getUserAddressFromPref();
     }
+
 }

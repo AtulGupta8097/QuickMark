@@ -22,7 +22,8 @@
 
         <activity
             android:name=".Auth.PasswordActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Activity.SeeAllCategoryActivity"
             android:exported="false" />
@@ -52,11 +53,11 @@
         <activity
             android:name=".Auth.OtpActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateVisible|adjustResize"/>
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".Auth.SignUpActivity"
             android:exported="false"
-            android:windowSoftInputMode="stateVisible" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Auth.AuthenticationActivity"
             android:exported="false" />

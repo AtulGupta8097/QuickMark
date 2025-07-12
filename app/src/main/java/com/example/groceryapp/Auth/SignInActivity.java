@@ -18,17 +18,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
+import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.R;
 import com.example.groceryapp.databinding.ActivitySignInBinding;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
+import com.example.groceryapp.viewModels.UserViewModel;
 
 import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
     private ActivitySignInBinding binding;
-    private AuthViewModel viewModel;
+    private AuthViewModel authViewModel;
+    private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class SignInActivity extends AppCompatActivity {
             return insets;
         });
 
-        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         setObservers();
 
@@ -51,20 +54,29 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void setObservers() {
-        // Observe login result
-        viewModel.getLoginResult().observe(this, isSuccess -> {
+        authViewModel.getLoginResult().observe(this, isSuccess -> {
             Utils.hideDialog();
             if (isSuccess == null) return;
 
             if (isSuccess) {
-                Utils.setUserPhoneNumber(Objects.requireNonNull(binding.numberEd.getText()).toString().trim());
-                startActivity(new Intent(this, MainActivity.class));
-                finishAffinity();
+                String phone = Objects.requireNonNull(binding.numberEd.getText()).toString().trim();
+                Utils.setUserPhoneNumber(phone);
+
+                // Now initialize UserViewModel (after phone is available)
+                userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
+
+                // Show fetching dialog and start cart + address recovery
+                Utils.showDialog(this, "Fetching your details...");
+
+                userViewModel.recoverUserDataFromFirebase(() -> {
+                    Utils.hideDialog();
+                    startActivity(new Intent(this, MainActivity.class));
+                    finishAffinity();
+                });
             }
         });
 
-        // Observe messages
-        viewModel.getMessage().observe(this, msg -> {
+        authViewModel.getMessage().observe(this, msg -> {
             if (msg != null && !msg.isEmpty()) {
                 Utils.hideDialog();
                 showError(msg);
@@ -87,19 +99,17 @@ public class SignInActivity extends AppCompatActivity {
         }
 
         Utils.showDialog(this, "Signing In...");
-        viewModel.loginWithPhoneAndPassword(number, password);
+        authViewModel.loginWithPhoneAndPassword(number, password);
     }
 
     private void showError(String message) {
-        Log.d("msg",message);
+        Log.d("SignInError", message);
         binding.errorText.setText(message);
 
-        // Load slide in animation
         Animation slideIn = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
         binding.errorText.startAnimation(slideIn);
         binding.errorText.setVisibility(View.VISIBLE);
 
-        // Auto-hide after 2.5 seconds with slide out animation
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             Animation slideOut = AnimationUtils.loadAnimation(this, R.anim.slide_out_left);
             binding.errorText.startAnimation(slideOut);

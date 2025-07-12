@@ -55,6 +55,9 @@ public class CartProduct {
         this.ratingCount = ratingCount;
         this.averageRating = averageRating;
     }
+    public CartProduct(){
+
+    }
 
     @NonNull
     public String getProductId() {

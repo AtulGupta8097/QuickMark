@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.OrdersModel;
+import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.R;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.adapter.CartAdapter;
@@ -25,6 +26,7 @@ import com.example.groceryapp.databinding.ActivityCartBinding;
 import com.example.groceryapp.databinding.CartItemDesignBinding;
 import com.example.groceryapp.roomDatabase.CartProduct;
 import com.example.groceryapp.viewModels.UserViewModel;
+import com.google.firebase.database.FirebaseDatabase;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -145,7 +147,8 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
                     userViewModel.setBadgeCartCount(badgeCurrent + 1);
 
                     saveCartProductInDB(updatedProduct);
-                    userViewModel.updateCartProductItemCount(cartProduct.getProductId(), cartInc);
+                    Log.d("error",updatedProduct.toString());
+                    userViewModel.updateCartProductItem(updatedProduct);
                 } else {
                     Utils.showToast(CartActivity.this, "Currently we have only " + currentNumber + " item(s) available");
                 }
@@ -180,10 +183,16 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
                     userViewModel.setBadgeCartCount(Math.max(badgeCurrent - 1, 0));
 
                     saveCartProductInDB(updatedProduct);
-                    userViewModel.updateCartProductItemCount(cartProduct.getProductId(), cartDec);
+                    Log.d("error",updatedProduct.toString());
+                    userViewModel.updateCartProductItem(updatedProduct);
 
                     if (cartDec == 0) {
                         userViewModel.deleteCartProduct(cartProduct.getProductId());
+                        FirebaseDatabase.getInstance().getReference()
+                                .child("Admins").child("AdminInfo").child("userCarts")
+                                .child(Utils.getUserPhoneNumber())
+                                .child(cartProduct.getProductId())
+                                .removeValue();
                     }
                 }
             }
