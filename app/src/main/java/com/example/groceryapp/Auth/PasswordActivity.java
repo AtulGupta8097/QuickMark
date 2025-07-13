@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.groceryapp.Activity.MainActivity;
 import com.example.groceryapp.R;
@@ -29,15 +26,12 @@ public class PasswordActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+
         binding = ActivityPasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         // Init ViewModel
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
@@ -113,6 +107,7 @@ public class PasswordActivity extends AppCompatActivity {
         return password.matches(passwordPattern);
     }
     private void animateField(View view) {
+        Utils.vibrate(this,150);
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         view.startAnimation(shake);
     }

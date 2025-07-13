@@ -10,11 +10,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
@@ -33,18 +30,15 @@ public class SignInActivity extends AppCompatActivity {
     private AuthViewModel authViewModel;
     private UserViewModel userViewModel;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
@@ -62,16 +56,19 @@ public class SignInActivity extends AppCompatActivity {
                 String phone = Objects.requireNonNull(binding.numberEd.getText()).toString().trim();
                 Utils.setUserPhoneNumber(phone);
 
-                // Now initialize UserViewModel (after phone is available)
-                userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
+                // Fetch & cache user name after successful login
+                authViewModel.fetchAndCacheUserName(phone, () -> {
+                    // Now initialize UserViewModel (after phone is available)
+                    userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
 
-                // Show fetching dialog and start cart + address recovery
-                Utils.showDialog(this, "Fetching your details...");
+                    // Show fetching dialog and start cart + address recovery
+                    Utils.showDialog(this, "Fetching your details...");
 
-                userViewModel.recoverUserDataFromFirebase(() -> {
-                    Utils.hideDialog();
-                    startActivity(new Intent(this, MainActivity.class));
-                    finishAffinity();
+                    userViewModel.recoverUserDataFromFirebase(() -> {
+                        Utils.hideDialog();
+                        startActivity(new Intent(this, MainActivity.class));
+                        finishAffinity();
+                    });
                 });
             }
         });

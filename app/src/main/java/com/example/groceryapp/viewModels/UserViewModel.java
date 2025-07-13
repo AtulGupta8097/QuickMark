@@ -202,6 +202,7 @@ public class UserViewModel extends AndroidViewModel {
             onComplete.run();
             return;
         }
+        deleteAllCartProductFromRoomDB();
 
         DatabaseReference cartRef = FirebaseDatabase.getInstance().getReference()
                 .child("Admins").child("AdminInfo").child("userCarts").child(phone);

@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.groceryapp.Activity.MainActivity;
 import com.example.groceryapp.Models.Users;
 import com.example.groceryapp.databinding.ActivityOtpBinding;
 import com.example.groceryapp.utils.Utils;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 
 public class OtpActivity extends AppCompatActivity {
 
-    private String number;
+    private String number,firstName,lastName;
     private AuthViewModel viewModel;
     private ActivityOtpBinding binding;
 
@@ -42,7 +43,7 @@ public class OtpActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
-        getNumber();
+        getNumberAndName();
         setNumber();
         setUpOtpFields();
         setObservers();
@@ -50,12 +51,14 @@ public class OtpActivity extends AppCompatActivity {
         onVerifyBtnClicked();
     }
 
-    private void getNumber() {
+    private void getNumberAndName() {
         number = getIntent().getStringExtra("number");
+        firstName = getIntent().getStringExtra("firstName");
+        lastName = getIntent().getStringExtra("lastName");
     }
 
     private void setNumber() {
-        binding.phoneNumber.setText(String.format("+91%s", number));
+        binding.userPhone2.setText(String.format("+91%s", number));
     }
 
     private void sendOtp() {
@@ -78,7 +81,7 @@ public class OtpActivity extends AppCompatActivity {
             }
 
             Utils.showDialog(this, "Verifying OTP...");
-            Users user = new Users(number);
+            Users user = new Users(number,firstName+" "+lastName);
             viewModel.signInWithPhoneAuthCredential(otp, user);
         });
     }
@@ -113,7 +116,7 @@ public class OtpActivity extends AppCompatActivity {
             Utils.setUserPhoneNumber(number);
 
             if (hasPassword) {
-                startActivity(new Intent(this, com.example.groceryapp.Activity.MainActivity.class));
+                startActivity(new Intent(this, MainActivity.class));
             } else {
                 Intent intent = new Intent(this, PasswordActivity.class);
                 intent.putExtra("phone", number);

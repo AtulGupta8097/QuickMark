@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigation_graph"
     app:startDestination="@id/ShopFragment">
+
     <fragment
         android:id="@+id/ShopFragment"
         android:name="com.example.groceryapp.fragments.ShopFragment"
@@ -10,6 +11,7 @@
         <action
             android:id="@+id/action_ShopFragment_to_CategoryFragment"
             app:destination="@id/CategoryFragment" />
+
         <action
             android:id="@+id/action_ShopFragment_to_SearchFragment"
             app:destination="@id/SearchFragment" />
@@ -18,17 +20,13 @@
     <fragment
         android:id="@+id/SearchFragment"
         android:name="com.example.groceryapp.fragments.SearchFragment"
-        android:label="Search"/>
-    <fragment
-        android:id="@+id/AccountFragment"
-        android:name="com.example.groceryapp.fragments.AccountFragment"
-        android:label="Account"/>
+        android:label="Search"
+        app:popUpTo="@id/ShopFragment"
+        app:popUpToInclusive="false"/>
+
     <fragment
         android:id="@+id/CategoryFragment"
         android:name="com.example.groceryapp.fragments.CategoryFragment"
-        android:label="Category"/>
-
-
-
+        android:label="Category" />
 
 </navigation>

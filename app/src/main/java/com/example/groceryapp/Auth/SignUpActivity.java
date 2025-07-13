@@ -65,6 +65,8 @@ public class SignUpActivity extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(this, OtpActivity.class);
                 intent.putExtra("number", Objects.requireNonNull(binding.numberEd.getText()).toString());
+                intent.putExtra("firstName", Objects.requireNonNull(binding.firstNameEd.getText()).toString());
+                intent.putExtra("lastName", Objects.requireNonNull(binding.lastNameEd.getText()).toString());
                 startActivity(intent);
                 finishAffinity();
             }

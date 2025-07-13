@@ -16,10 +16,10 @@
     <item android:title="Cart"
         android:id="@+id/CartActivity"
         android:icon="@drawable/menu_cart_icon"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"/>
 
     <item android:title="Account"
-        android:id="@+id/AccountFragment"
+        android:id="@+id/AccountActivity"
         android:icon="@drawable/menu_profile_icon"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"/>
 </menu>

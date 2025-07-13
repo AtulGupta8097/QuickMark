@@ -1,7 +1,8 @@
 package com.example.groceryapp.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.groceryapp.CategoryItem;
@@ -44,18 +44,33 @@ public class SearchFragment extends Fragment {
         userViewModel = ((GroceryApp) requireActivity().getApplication()).getUserViewModel();
 
         setupAdapter();
-        onBackArrowClicked();
+        setupListeners();
 
         showShimmer();
-
         userViewModel.fetchAllProductsRealtime();
         observeAllProduct();
 
         return binding.getRoot();
     }
 
-    private void onBackArrowClicked() {
+    private void setupListeners() {
         binding.backArrow.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+
+        binding.searchBar.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim().toLowerCase();
+                if (query.isEmpty()) {
+                    binding.notFound.setVisibility(View.GONE);
+                    updateCategorySections();
+                } else {
+                    showFilteredProducts(query);
+                }
+            }
+        });
     }
 
     private void setupAdapter() {
@@ -72,8 +87,8 @@ public class SearchFragment extends Fragment {
                 allProducts.clear();
                 allProducts.addAll(products);
 
-                beveragesProduct.clear();
                 beautyProduct.clear();
+                beveragesProduct.clear();
 
                 for (Product p : allProducts) {
                     String category = p.getProductCategory().trim().toLowerCase();
@@ -100,6 +115,28 @@ public class SearchFragment extends Fragment {
         if (!beveragesProduct.isEmpty()) {
             categoryItems.add(new CategoryItem(CategoryItem.TYPE_TITLE, "Beverages"));
             categoryItems.add(CategoryItem.createProductGrid(beveragesProduct));
+        }
+
+        homeAdapter.submitList(categoryItems);
+    }
+
+    private void showFilteredProducts(String query) {
+        List<Product> filteredList = new ArrayList<>();
+
+        for (Product p : allProducts) {
+            String title = p.getProductTitle().toLowerCase();
+            if (title.contains(query) || String.valueOf(p.getProductPrice()).equals(query)) {
+                filteredList.add(p);
+            }
+        }
+
+        List<CategoryItem> categoryItems = new ArrayList<>();
+
+        if (!filteredList.isEmpty()) {
+            binding.notFound.setVisibility(View.GONE);
+            categoryItems.add(CategoryItem.createProductGrid(filteredList));
+        } else {
+            binding.notFound.setVisibility(View.VISIBLE);
         }
 
         homeAdapter.submitList(categoryItems);

@@ -1,6 +1,7 @@
 package com.example.groceryapp.viewModels;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -13,7 +14,11 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -119,6 +124,31 @@ public final class AuthViewModel extends ViewModel {
                     userExists.setValue(null);
                 });
     }
+
+    public void fetchAndCacheUserName(String phone, Runnable onComplete) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference()
+                .child("AllUsers").child("User").child(phone).child("userName");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String name = snapshot.getValue(String.class);
+                    if (name != null && !name.isEmpty()) {
+                        Utils.setUserName(name);
+                    }
+                }
+                onComplete.run();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("AuthViewModel", "Failed to fetch user name: " + error.getMessage());
+                onComplete.run();
+            }
+        });
+    }
+
 
 
     private void saveUserDataIfNotExists(Users user) {

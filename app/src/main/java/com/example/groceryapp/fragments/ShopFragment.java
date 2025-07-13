@@ -109,8 +109,6 @@ private ActivityResultLauncher<Intent> addressLauncher;
         }
     }
 
-
-
     private void loadLottieAnimation() {
         LottieAnimationView lottieView = binding.lottieView;
 

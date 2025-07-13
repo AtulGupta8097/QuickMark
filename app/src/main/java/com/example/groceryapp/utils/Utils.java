@@ -2,6 +2,7 @@ package com.example.groceryapp.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ public final class Utils {
 
     private static AlertDialog dialog;
     private static FirebaseAuth auth;
-    private static Context appContext;  // ✅ for safe global access
+    private static Context appContext;
 
     // Must be called once in Application class
     public static void init(Context context) {
@@ -104,6 +105,28 @@ public final class Utils {
                 .putString("user_phone", phoneNumber)
                 .apply();
     }
+
+    // Save user name
+    public static void setUserName(String name) {
+        if (appContext == null) {
+            throw new IllegalStateException("Utils.init() not called in Application class.");
+        }
+        appContext.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+                .edit()
+                .putString("user_name", name)
+                .apply();
+    }
+
+    // Retrieve user name
+    public static String getUserName() {
+        if (appContext == null) {
+            throw new IllegalStateException("Utils.init() not called in Application class.");
+        }
+        return appContext.getSharedPreferences("user_session", Context.MODE_PRIVATE)
+                .getString("user_name", "");
+    }
+
+
 
     public static void hideDialog() {
         if (dialog != null && dialog.isShowing()) {

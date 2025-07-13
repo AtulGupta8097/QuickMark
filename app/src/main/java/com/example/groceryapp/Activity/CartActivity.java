@@ -3,6 +3,7 @@ package com.example.groceryapp.Activity;
 import static java.lang.String.valueOf;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,7 +65,29 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
         getCartProducts();
         onBackBtnClicked();
         onPayBtnClicked();
+        onAddMoreBtnClicked();
+        onBrowseTvClicked();
 
+    }
+
+    private void onBrowseTvClicked() {
+        binding.browseProductTv.setOnClickListener(V->{
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("navigate_to_search", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    private void onAddMoreBtnClicked() {
+        binding.addMoreBtn.setOnClickListener(V->{
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("navigate_to_search", true);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void onBackBtnClicked() {

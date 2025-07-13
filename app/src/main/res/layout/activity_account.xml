@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".Activity.AccountActivity">
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <!-- Top AppBar -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/_38sdp"
+          android:background="@color/white"
+          android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:background="@drawable/custom_transparent_btn"
+            android:src="@drawable/leftarrow"
+            app:tint="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Settings"
+            android:textSize="@dimen/_12ssp" />
+
+      </LinearLayout>
+
+      <!-- Profile Card -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/_60sdp"
+          android:layout_marginTop="@dimen/_12sdp"
+          android:background="@color/white"
+          android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:src="@drawable/user_profile" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+          <TextView
+              android:id="@+id/userName"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Atul Gupta"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_14ssp"
+              android:fontFamily="@font/poppins_bold" />
+
+          <TextView
+              android:id="@+id/userPhone"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="7718094564"
+              android:textColor="@color/dark_grey"
+              android:textSize="@dimen/_10ssp"
+              android:fontFamily="@font/poppins" />
+        </LinearLayout>
+      </LinearLayout>
+
+      <!-- Divider -->
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:layout_marginHorizontal="@dimen/_8sdp"
+          android:background="#616060" />
+
+      <!-- My Details Card -->
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:background="@color/white"
+          android:orientation="vertical"
+          android:padding="@dimen/_12sdp"
+          android:layout_marginTop="@dimen/_8sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Details"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginBottom="@dimen/_8sdp" />
+
+        <!-- Full Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Full Name"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins" />
+
+        <TextView
+            android:id="@+id/userNmae2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Atul Gupta"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginBottom="@dimen/_8sdp" />
+
+        <!-- Phone Number -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins" />
+
+        <TextView
+            android:id="@+id/userPhone2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7718094564"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginBottom="@dimen/_8sdp" />
+
+        <!-- Address Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="@dimen/_8sdp" />
+
+        <!-- Address with Edit Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/_8sdp">
+
+          <TextView
+              android:id="@+id/userAddress"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:maxLines="2"
+              android:ellipsize="end"
+              android:text="Varanasi, Uttar Pradesh"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_14ssp"
+              android:fontFamily="@font/poppins_semibold" />
+
+          <ImageView
+              android:id="@+id/editAddressIcon"
+              android:layout_width="@dimen/_26sdp"
+              android:layout_height="@dimen/_18sdp"
+              android:src="@drawable/edit_img"
+              android:focusable="true"
+              android:clickable="true"
+              android:contentDescription="Edit Address"
+              android:layout_marginStart="@dimen/_8sdp"
+              app:tint="@color/orange" />
+        </LinearLayout>
+
+
+        <!-- My Orders -->
+        <LinearLayout
+            android:id="@+id/myOrdersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/_10sdp">
+
+          <ImageView
+              android:layout_width="@dimen/_20sdp"
+              android:layout_height="@dimen/_20sdp"
+              android:layout_marginEnd="@dimen/_8sdp"
+              android:src="@drawable/order_img"
+              app:tint="@color/orange" />
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="My Orders"
+              android:textColor="@color/black"
+              android:textSize="@dimen/_14ssp"
+              android:fontFamily="@font/poppins_semibold" />
+
+          <ImageView
+              android:layout_width="@dimen/_16sdp"
+              android:layout_height="@dimen/_16sdp"
+              android:src="@drawable/right_arror"
+              app:tint="@color/dark_grey" />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+  </ScrollView>
+
+  <androidx.appcompat.widget.AppCompatButton
+      android:id="@+id/logoutButton"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/_42sdp"
+      android:layout_margin="@dimen/_16sdp"
+      android:text="Log Out"
+      android:textAllCaps="false"
+      android:textSize="@dimen/_14ssp"
+      android:textColor="@color/white"
+      android:background="@drawable/custom_green_btn"
+      android:fontFamily="@font/poppins_bold" />
+
+</LinearLayout>
