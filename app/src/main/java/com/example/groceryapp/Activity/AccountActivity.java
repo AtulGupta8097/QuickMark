@@ -72,7 +72,15 @@ public class AccountActivity extends AppCompatActivity {
         loadUserData();
         setupListeners();
         setupBackButton();
+        setupOnMyOrdersClicked();
     }
+
+    private void setupOnMyOrdersClicked() {
+        binding.myOrdersLayout.setOnClickListener(V->{
+        startActivity(new Intent(this, OrderActivity.class));
+        });
+    }
+
 
     private void setupBackButton() {
         binding.backBtn.setOnClickListener(v -> finish());

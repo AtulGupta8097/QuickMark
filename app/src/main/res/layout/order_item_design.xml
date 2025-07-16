@@ -1,0 +1,88 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8sdp"
+    android:background="@color/card_bg"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/card_bg"
+        android:padding="@dimen/_8sdp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/imageRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
+            android:layoutDirection="ltr"
+            android:clipToPadding="false" />
+
+        <!-- Order Status -->
+        <TextView
+            android:id="@+id/orderStatusTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Delivered"
+            android:textSize="@dimen/_10ssp"
+            android:textColor="@color/black"
+            android:drawablePadding="@dimen/_4sdp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:drawableEndCompat="@drawable/done" />
+
+        <!-- Date & Price Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/placedDateTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Placed at 11th May 2025, 10:20 pm"
+                android:textSize="@dimen/_10ssp"
+                android:textColor="@color/dark_grey"
+                android:fontFamily="@font/poppins" />
+
+            <TextView
+                android:id="@+id/totalPriceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₹ 257"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/black"
+                android:drawablePadding="@dimen/_8sdp"
+                android:fontFamily="@font/poppins_bold"
+                app:drawableEndCompat="@drawable/ic_right_arror"
+                app:drawableTint="@color/black" />
+        </LinearLayout>
+
+        <!-- Order Again Button -->
+        <TextView
+            android:id="@+id/orderAgainTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order Again"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:background="@drawable/custom_green_btn"
+            android:gravity="center"
+            android:paddingVertical="@dimen/_8sdp"
+            android:fontFamily="@font/poppins_semibold" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

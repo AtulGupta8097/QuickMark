@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.groceryapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.groceryapp"
@@ -66,15 +66,15 @@ dependencies {
 // Others
     implementation(libs.denzcoskun.imageslideshow)
     implementation(libs.facebook.shimmer)
-    implementation(libs.sdp.android)
     implementation(libs.ssp.android)
+    implementation(libs.sdp.android)
     implementation(libs.glide);
 
     implementation(libs.play.services.maps)
-    implementation("com.google.android.gms:play-services-location:21.3.0")
-    implementation("com.google.android.libraries.places:places:4.3.1")
-    implementation("com.airbnb.android:lottie:6.4.0")
-    implementation("com.razorpay:checkout:1.6.33")
+    implementation(libs.play.services.location)
+    implementation(libs.places)
+    implementation(libs.lottie)
+    implementation(libs.checkout)
 
 
 

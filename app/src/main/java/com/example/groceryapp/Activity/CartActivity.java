@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.groceryapp.GroceryApp;
 import com.example.groceryapp.Models.OrdersModel;
-import com.example.groceryapp.Models.Product;
 import com.example.groceryapp.R;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.adapter.CartAdapter;
@@ -273,37 +272,51 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
 
 
     @Override
-    public void onPaymentSuccess(String s) {
-           userViewModel.resetProductsAndCartBadge();
+    public void onPaymentSuccess(String paymentId) {
+        userViewModel.resetProductsAndCartBadge();
+
         Utils.observeOnce(userViewModel.getCartProducts(), this, cartProducts -> {
             for (CartProduct product : cartProducts) {
                 userViewModel.increaseBuyCountInFirebase(product, product.getItemCount());
             }
 
-            saveOrder();
-            userViewModel.deleteAllCartProductFromRoomDB();
-            userViewModel.deleteCartProductFromFirebaseDb();
-
-
-            Utils.showToast(this, "Payment Success");
-            finish(); // optional: close CartActivity after payment
+            // Save order and go to OrderSuccessActivity
+            saveOrder(cartProducts);
         });
     }
 
 
-    private void saveOrder() {
-        Utils.observeOnce(userViewModel.getCartProducts(),this,cartProducts -> {
-            String address = userViewModel.getCachedUserAddress();
-            OrdersModel order = new OrdersModel(cartProducts,
-                    address,
-                    Utils.getUserPhoneNumber(),
-                    getCurrentDate(),
-                    Utils.getUniqueId(),
-                    0
-            );
-            userViewModel.saveOrder(order);
-        });
+
+    private void saveOrder(List<CartProduct> cartProducts) {
+        String address = userViewModel.getCachedUserAddress();
+        String date = getCurrentDate();
+        String orderId = Utils.getUniqueId();
+
+        OrdersModel order = new OrdersModel(
+                cartProducts,
+                address,
+                Utils.getUserPhoneNumber(),
+                date,
+                orderId,
+                0,
+                "Online"
+        );
+
+        userViewModel.saveOrder(order);
+
+        userViewModel.deleteAllCartProductFromRoomDB();
+        userViewModel.deleteCartProductFromFirebaseDb();
+
+        // Open Order Success page with toPay value we already have
+        Intent intent = new Intent(this, OrderSuccessActivity.class);
+        intent.putExtra("orderId", orderId);
+        intent.putExtra("date", date);
+        intent.putExtra("address", address);
+        intent.putExtra("price", String.valueOf(toPay));  // ✅ using existing toPay variable here
+        startActivity(intent);
+        finish();
     }
+
 
     @Override
     public void onPaymentError(int i, String s) {

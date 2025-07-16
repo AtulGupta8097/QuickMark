@@ -41,6 +41,8 @@ public class UserViewModel extends AndroidViewModel {
     private final ExecutorService executorService;
     private final SharedPreferences cartSharedPreferences, userAddressPreferences;
     private final LiveData<List<CartProduct>> cartProduct;
+    private final MutableLiveData<List<OrdersModel>> userOrdersLiveData = new MutableLiveData<>();
+
     private final Context appContext;
 
     public UserViewModel(@NonNull Application application) {
@@ -123,6 +125,41 @@ public class UserViewModel extends AndroidViewModel {
     public void setCartCountToZero() {
         cartSharedPreferences.edit().putInt("cartCount", 0).apply();
         badgeCartCount.setValue(0);
+    }
+
+    public LiveData<List<OrdersModel>> getUserOrdersLiveData() {
+        return userOrdersLiveData;
+    }
+    public void fetchOrdersFromFirebase() {
+        String phoneNumber = getCurrentPhone();
+
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance()
+                .getReference("Admins")
+                .child("AdminInfo")
+                .child("Orders");
+
+        ordersRef.orderByChild("orderingUserId").equalTo(phoneNumber)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<OrdersModel> userOrders = new ArrayList<>();
+
+                        for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                            OrdersModel order = orderSnapshot.getValue(OrdersModel.class);
+                            if (order != null) {
+                                order.setOrderId(orderSnapshot.getKey()); // capture the key
+                                userOrders.add(order);
+                            }
+                        }
+
+                        userOrdersLiveData.setValue(userOrders); // NOT orderAdapter.submitList() here
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("UserViewModel", "Failed to fetch orders: " + error.getMessage());
+                    }
+                });
     }
 
 

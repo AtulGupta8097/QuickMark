@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:id="@+id/main"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity.OrderSuccessActivity">
+
+    <ImageView
+        android:src="@drawable/done"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:text="Order Placed Successfully!"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:text="Order Successful!"
+        android:textSize="@dimen/_14ssp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="Thank you for shopping with us 😊"
+        android:textSize="@dimen/_10ssp"
+        android:textColor="@color/dark_grey"
+        android:fontFamily="@font/poppins"
+        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/viewOrdersBtn"
+        android:text="View My Orders"
+        android:backgroundTint="@color/pink"
+        android:background="@drawable/custom_green_btn"
+        android:fontFamily="@font/poppins"
+        android:textSize="@dimen/_12ssp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:layout_marginHorizontal="@dimen/_26sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/continueShoppingBtn"
+        android:text="Continue Shopping"
+        android:backgroundTint="@color/green"
+        android:layout_marginHorizontal="@dimen/_26sdp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_12ssp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/custom_green_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

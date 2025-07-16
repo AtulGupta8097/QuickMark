@@ -32,7 +32,6 @@
             android:layout_width="@dimen/_24sdp"
             android:layout_height="@dimen/_24sdp"
             android:layout_marginStart="@dimen/_8sdp"
-            android:background="@drawable/custom_transparent_btn"
             android:src="@drawable/leftarrow"
             app:tint="@color/black" />
 
@@ -128,7 +127,7 @@
             android:layout_height="wrap_content"
             android:text="Atul Gupta"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/poppins_semibold"
             android:layout_marginBottom="@dimen/_8sdp" />
 
@@ -147,7 +146,7 @@
             android:layout_height="wrap_content"
             android:text="7718094564"
             android:textColor="@color/black"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             android:fontFamily="@font/poppins_semibold"
             android:layout_marginBottom="@dimen/_8sdp" />
 
@@ -178,7 +177,7 @@
               android:ellipsize="end"
               android:text="Varanasi, Uttar Pradesh"
               android:textColor="@color/black"
-              android:textSize="@dimen/_14ssp"
+              android:textSize="@dimen/_12ssp"
               android:fontFamily="@font/poppins_semibold" />
 
           <ImageView
@@ -216,7 +215,7 @@
               android:layout_weight="1"
               android:text="My Orders"
               android:textColor="@color/black"
-              android:textSize="@dimen/_14ssp"
+              android:textSize="@dimen/_12ssp"
               android:fontFamily="@font/poppins_semibold" />
 
           <ImageView
