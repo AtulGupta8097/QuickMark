@@ -41,8 +41,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         @Override
         public boolean areContentsTheSame(@NonNull OrdersModel oldItem, @NonNull OrdersModel newItem) {
-            return oldItem.equals(newItem);
+            return oldItem.getOrderStatus() == newItem.getOrderStatus()
+                    && oldItem.getOrderDate().equals(newItem.getOrderDate())
+                    && oldItem.getOrderId().equals(newItem.getOrderId()); // add more fields if needed
         }
+
     };
 
     private final AsyncListDiffer<OrdersModel> differ = new AsyncListDiffer<>(this, diffCallback);
@@ -89,7 +92,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             );
 
             binding.placedDateTv.setText("Placed at " + order.getOrderDate());
-            binding.totalPriceTv.setText("₹ " + getTotalPrice(order));
+            binding.totalPriceTv.setText("₹" + getTotalPrice(order));
             binding.orderAgainTv.setOnClickListener(v -> listener.onOrderAgain(order));
 
             // Setup nested image recycler view

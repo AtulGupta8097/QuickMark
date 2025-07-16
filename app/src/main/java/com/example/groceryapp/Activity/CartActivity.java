@@ -289,7 +289,7 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
 
     private void saveOrder(List<CartProduct> cartProducts) {
         String address = userViewModel.getCachedUserAddress();
-        String date = getCurrentDate();
+        String date = getCurrentDateTime();
         String orderId = Utils.getUniqueId();
 
         OrdersModel order = new OrdersModel(
@@ -322,15 +322,9 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
     public void onPaymentError(int i, String s) {
         Utils.showToast(this,"Payment failed");
     }
-    public String getCurrentDate() {
-        // Define the desired date format
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-
-        // Get the current date
-        Date date = new Date();
-
-        // Format and return as string
-        return sdf.format(date);
+    public String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+        return sdf.format(new Date());
     }
 
 }

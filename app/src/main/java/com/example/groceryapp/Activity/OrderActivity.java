@@ -42,6 +42,13 @@ public class OrderActivity extends AppCompatActivity {
 
         fetchOrders();
         setupRecycler();
+        onBackBtnClicked();
+    }
+
+    private void onBackBtnClicked() {
+        binding.backBtn.setOnClickListener(V->{
+            finish();
+        });
     }
 
     private void setupRecycler() {
