@@ -2,6 +2,7 @@ package com.example.groceryapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.groceryapp.Activity.OrderDetailActivity;
 import com.example.groceryapp.Models.OrdersModel;
 import com.example.groceryapp.R;
 import com.example.groceryapp.databinding.OrderItemDesignBinding;
@@ -93,6 +95,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             binding.placedDateTv.setText("Placed at " + order.getOrderDate());
             binding.totalPriceTv.setText("₹" + getTotalPrice(order));
+            binding.totalPriceTv.setOnClickListener(V->{
+                Intent intent = new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("orderId", order.getOrderId());
+                context.startActivity(intent);
+            });
             binding.orderAgainTv.setOnClickListener(v -> listener.onOrderAgain(order));
 
             // Setup nested image recycler view
@@ -119,19 +126,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 case 1: return "Order Shipped";
                 case 2: return "Out for Delivery";
                 case 3: return "Order Delivered";
-                case 4: return "Order Cancelled";
-                default: return "Unknown Status";
+                default: return "Order Cancelled";
             }
         }
 
         private int getStatusIcon(int status) {
             switch (status) {
-                case 0: return R.drawable.ic_pending;
+                case 0:return R.drawable.ic_ordered;
                 case 1: return R.drawable.ic_shipped;
                 case 2: return R.drawable.ic_delivery;
                 case 3: return R.drawable.done;
-                case 4: return R.drawable.ic_cancel;
-                default: return R.drawable.ic_pending;
+                default: return R.drawable.ic_cancel;
             }
         }
     }

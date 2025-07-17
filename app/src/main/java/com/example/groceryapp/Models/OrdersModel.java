@@ -1,10 +1,12 @@
 package com.example.groceryapp.Models;
 
 import com.example.groceryapp.roomDatabase.CartProduct;
+
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class OrdersModel {
+public class OrdersModel{
 
     List<CartProduct> orderList;
     String userAddress, orderingUserId, orderDate, orderId, paymentMode;

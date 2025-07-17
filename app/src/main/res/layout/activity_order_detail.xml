@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Activity.OrderDetailActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.shuhart.stepview.StepView
+            android:id="@+id/step_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sv_animationType="Line"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            app:sv_stepLineWidth="2dp"
+            app:sv_stepPadding="6dp"
+            app:sv_doneCircleColor="@color/green"
+            app:sv_doneStepLineColor="@color/green"
+            app:sv_doneStepMarkColor="@color/white"
+            app:sv_doneTextColor="@color/green"
+            app:sv_selectedCircleColor="@color/green"
+            app:sv_selectedStepNumberColor="@color/white"
+            app:sv_selectedTextColor="@color/green"
+            app:sv_nextStepCircleColor="@color/dark_grey"
+            app:sv_nextStepLineColor="@color/dark_grey"
+            app:sv_nextTextColor="@color/dark_grey"
+            app:sv_stepNumberTextSize="12sp"
+            app:sv_doneCircleRadius="12dp"
+            app:sv_selectedCircleRadius="12dp"
+            app:sv_animationDuration="300" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/orderProductRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_26sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:nestedScrollingEnabled="false" />
+
+        <TextView
+            android:id="@+id/totalPriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total: ₹0"
+            android:textSize="@dimen/_12ssp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_gravity="end" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancel Order"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            android:fontFamily="@font/poppins"
+            android:background="@drawable/custom_green_btn"
+            android:textColor="@color/white"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginHorizontal="@dimen/_16sdp"/>
+
+        <TextView
+            android:id="@+id/orderIdText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order ID:"
+            android:textSize="@dimen/_10ssp"
+            android:fontFamily="@font/poppins"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/_4sdp"/>
+
+        <TextView
+            android:id="@+id/orderDateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order Date:"
+            android:fontFamily="@font/poppins"
+            android:textSize="@dimen/_10ssp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/_4sdp"/>
+
+    </LinearLayout>
+
+</ScrollView>

@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.groceryapp.GroceryApp;
-import com.example.groceryapp.Models.OrdersModel;
 import com.example.groceryapp.adapter.OrderAdapter;
 import com.example.groceryapp.databinding.ActivityOrderBinding;
 import com.example.groceryapp.viewModels.UserViewModel;

@@ -3,7 +3,7 @@ package com.example.groceryapp.roomDatabase;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import java.util.Objects;
+
 
 @Entity(tableName = "cart_product")
 public class CartProduct {

@@ -61,12 +61,12 @@
             <TextView
                 android:id="@+id/totalPriceTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="₹257"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/black"
+                android:layout_height="match_parent"
                 android:drawablePadding="@dimen/_8sdp"
                 android:fontFamily="@font/poppins_bold"
+                android:text="₹257"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
                 app:drawableEndCompat="@drawable/ic_right_arror"
                 app:drawableTint="@color/black" />
         </LinearLayout>

@@ -75,7 +75,6 @@ dependencies {
     implementation(libs.places)
     implementation(libs.lottie)
     implementation(libs.checkout)
-
-
-
+    implementation("com.github.shuhart:stepview:1.5.1")
 }
+
