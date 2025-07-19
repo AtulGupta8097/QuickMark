@@ -24,6 +24,6 @@ QuickMart is a complete food delivery app for personal use – including a *User
 
 ## 🔗 APKs
 👉 [Download User App](https://github.com/AtulGupta8097/QuickMart/releases/download/v1.0.0/QuickMart.apk)  
-👉 [Download Admin App]()
+👉 [Download Admin App](https://github.com/AtulGupta8097/QuickMart/releases/download/v1.0.0-admin/app-debug.apk)
 
 ## 🔐 Developed by Atul Gupta
