@@ -8,6 +8,7 @@ QuickMart is a complete food delivery app for personal use – including a *User
 - 🔐 OTP Authentication (Firebase)
 - 🛍 Browse menu & product details
 - 🛒 Add to cart & place orders
+- 📍Choose location using google map
 
 
 ### Admin App:
