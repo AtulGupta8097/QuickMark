@@ -67,18 +67,46 @@ public class OrderDetailActivity extends AppCompatActivity {
                 OrdersModel order = snapshot.getValue(OrdersModel.class);
                 if (order != null) {
                     adapter.setProductList(order.getOrderList());
-                    binding.totalPriceText.setText("Total: ₹" + calculateTotal(order));
-                    binding.orderIdText.setText("Order ID: " + orderId);
-                    binding.orderDateText.setText("Order Date: " + order.getOrderDate());
 
-                    animateStepView(order.getOrderStatus());
+                    // Subtotal
+                    int subtotal = calculateSubTotal(order);
+                    binding.subtotalText.setText("₹" + subtotal);
 
-                    if (order.getOrderStatus() == 0) {
+                    // Delivery
+                    int delivery = subtotal > 250 ? 0 : 40;
+                    binding.deliveryChargeText.setText("₹" + delivery);
+
+                    // Total
+                    int total = subtotal + delivery;
+                    binding.grandTotalText.setText("₹" + total);
+
+                    // Order Details
+                    binding.orderId.setText(orderId);
+                    binding.deliveryAddrress.setText(order.getUserAddress());
+                    binding.OrderDateAndTime.setText(order.getOrderDate());
+
+                    // StepView and Status Message
+                    int status = order.getOrderStatus();
+                    handleOrderStatusDisplay(status, order);
+
+                    // Cancel Button Visibility
+                    if (status == 0) {
                         binding.cancelBtn.setVisibility(View.VISIBLE);
+                        binding.cancelBtn.setText("Cancel Order");
                         binding.cancelBtn.setOnClickListener(v -> showCancelConfirmation(orderId));
+                    } else if (status == -1 || status == 3) {
+                        binding.cancelBtn.setVisibility(View.VISIBLE);
+                        binding.cancelBtn.setText("Order Again");
+                        binding.cancelBtn.setOnClickListener(v -> {
+                            for (CartProduct p : order.getOrderList()) {
+                                addToCart(p);
+                            }
+                            Toast.makeText(OrderDetailActivity.this, "Products added to cart", Toast.LENGTH_SHORT).show();
+                        });
                     } else {
                         binding.cancelBtn.setVisibility(View.GONE);
                     }
+
                 } else {
                     Toast.makeText(OrderDetailActivity.this, "Order not found", Toast.LENGTH_SHORT).show();
                 }
@@ -90,6 +118,44 @@ public class OrderDetailActivity extends AppCompatActivity {
             }
         });
     }
+    private void handleOrderStatusDisplay(int status, OrdersModel order) {
+        if (status == -1) {
+            // Cancelled
+            binding.stepView.setVisibility(View.GONE);
+            binding.deliveredAndCanceledStatus.setVisibility(View.VISIBLE);
+            binding.deliveredAndCanceledStatus.setText("This order was cancelled");
+            binding.deliveredAndCanceledStatus.setTextColor(getResources().getColor(R.color.red));
+            binding.deliveredAndCanceledStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel, 0, 0, 0);
+        } else if (status == 3) {
+            // Delivered
+            binding.stepView.setVisibility(View.VISIBLE);
+            binding.deliveredAndCanceledStatus.setVisibility(View.VISIBLE);
+            binding.deliveredAndCanceledStatus.setText("Order delivered successfully");
+            binding.deliveredAndCanceledStatus.setTextColor(getResources().getColor(R.color.black)); // or green if preferred
+            binding.deliveredAndCanceledStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
+            animateStepView(3);
+        } else {
+            // In progress
+            binding.stepView.setVisibility(View.VISIBLE);
+            binding.deliveredAndCanceledStatus.setVisibility(View.GONE);
+            animateStepView(status);
+        }
+    }
+
+
+    private void addToCart(CartProduct product) {
+    }
+
+    private int calculateSubTotal(OrdersModel order) {
+        int total = 0;
+        for (CartProduct p : order.getOrderList()) {
+            total += p.getProductPrice() * p.getItemCount();
+        }
+        return total;
+    }
+
+
+
     private void animateStepView(int status) {
         if (status == -1) {
             binding.stepView.go(0, true);
@@ -104,21 +170,11 @@ public class OrderDetailActivity extends AppCompatActivity {
             binding.stepView.postDelayed(() -> {
                 binding.stepView.go(step, true);
 
-                // ✅ Tick the current step
                 if (step == status) {
                     binding.stepView.done(true);
                 }
             }, (long) step * delay);
         }
-    }
-
-
-    private int calculateTotal(OrdersModel order) {
-        int total = 0;
-        for (CartProduct p : order.getOrderList()) {
-            total += p.getProductPrice() * p.getItemCount();
-        }
-        return total;
     }
 
     private void showCancelConfirmation(String orderId) {

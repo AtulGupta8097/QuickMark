@@ -1,95 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white"
     tools:context=".Activity.OrderDetailActivity">
 
+    <!-- Top Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:padding="@dimen/_12sdp"
+        android:gravity="center_vertical">
 
-        <com.shuhart.stepview.StepView
-            android:id="@+id/step_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:sv_animationType="Line"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            app:sv_stepLineWidth="2dp"
-            app:sv_stepPadding="6dp"
-            app:sv_doneCircleColor="@color/green"
-            app:sv_doneStepLineColor="@color/green"
-            app:sv_doneStepMarkColor="@color/white"
-            app:sv_doneTextColor="@color/green"
-            app:sv_selectedCircleColor="@color/green"
-            app:sv_selectedStepNumberColor="@color/white"
-            app:sv_selectedTextColor="@color/green"
-            app:sv_nextStepCircleColor="@color/dark_grey"
-            app:sv_nextStepLineColor="@color/dark_grey"
-            app:sv_nextTextColor="@color/dark_grey"
-            app:sv_stepNumberTextSize="12sp"
-            app:sv_doneCircleRadius="12dp"
-            app:sv_selectedCircleRadius="12dp"
-            app:sv_animationDuration="300" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orderProductRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_26sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
-            android:nestedScrollingEnabled="false" />
+        <ImageView
+            android:id="@+id/backBtn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/leftarrow"
+            app:tint="@color/black" />
 
         <TextView
-            android:id="@+id/totalPriceText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total: ₹0"
-            android:textSize="@dimen/_12ssp"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_gravity="end" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/cancelBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cancel Order"
-            android:textSize="@dimen/_12ssp"
-            android:visibility="gone"
-            android:fontFamily="@font/poppins"
-            android:background="@drawable/custom_green_btn"
-            android:textColor="@color/white"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginHorizontal="@dimen/_16sdp"/>
-
-        <TextView
-            android:id="@+id/orderIdText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Order ID:"
-            android:textSize="@dimen/_10ssp"
-            android:fontFamily="@font/poppins"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="@dimen/_4sdp"/>
-
-        <TextView
-            android:id="@+id/orderDateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Order Date:"
-            android:fontFamily="@font/poppins"
-            android:textSize="@dimen/_10ssp"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="@dimen/_4sdp"/>
-
+            android:text="Order Details"
+            android:layout_marginStart="12dp"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/poppins_bold" />
     </LinearLayout>
 
-</ScrollView>
+    <!-- Scrollable Content takes remaining space -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <com.shuhart.stepview.StepView
+                android:id="@+id/step_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                app:sv_animationType="Line"
+                app:sv_animationDuration="300"
+                android:layout_gravity="center"
+                app:sv_stepPadding="0dp"
+                app:sv_stepLineWidth="1dp"
+                app:sv_stepNumberTextSize="@dimen/_10ssp"
+                app:sv_doneCircleColor="@color/green"
+                app:sv_doneStepLineColor="@color/green"
+                app:sv_doneStepMarkColor="@color/white"
+                app:sv_doneTextColor="@color/black"
+                app:sv_selectedCircleColor="@color/green"
+                app:sv_selectedStepNumberColor="@color/white"
+                app:sv_selectedTextColor="@color/black"
+                app:sv_nextStepCircleColor="#B4B1B1"
+                app:sv_nextStepCircleEnabled="true"
+                app:sv_nextStepLineColor="@color/dark_grey"
+                app:sv_nextTextColor="@color/black" />
+
+            <TextView
+                android:id="@+id/deliveredAndCanceledStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:drawablePadding="@dimen/_8sdp"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderProductRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_26sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+            <!-- Bill Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="2dp"
+                android:layout_marginTop="@dimen/_12ssp"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardBackgroundColor="@color/card_bg">
+
+                <LinearLayout
+                    android:id="@+id/billSection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:padding="@dimen/_12sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bill Summary"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="@dimen/_12ssp"/>
+
+                    <!-- Subtotal -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/_4sdp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Subtotal"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+
+                        <TextView
+                            android:id="@+id/subtotalText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₹0"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+                    </LinearLayout>
+
+                    <!-- Delivery Charges -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/_4sdp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Delivery Charges"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+
+                        <TextView
+                            android:id="@+id/deliveryChargeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₹0"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+                    </LinearLayout>
+
+                    <!-- Discount -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="@dimen/_4sdp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+
+                        <TextView
+                            android:id="@+id/discountText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="- ₹0"
+                            android:fontFamily="@font/poppins"
+                            android:textSize="@dimen/_10ssp" />
+                    </LinearLayout>
+
+                    <!-- Total -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingTop="@dimen/_6sdp"
+                        android:paddingBottom="@dimen/_2sdp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Total"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <TextView
+                            android:id="@+id/grandTotalText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₹0"
+                            android:fontFamily="@font/poppins_bold"
+                            android:textSize="@dimen/_12ssp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="2dp"
+                android:layout_marginTop="@dimen/_12ssp"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardBackgroundColor="@color/card_bg">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_12sdp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Details"
+                        android:fontFamily="@font/poppins_bold"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order ID"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/dark_grey"/>
+                    <TextView
+                        android:id="@+id/orderId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/dark_grey"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Delivery Address"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/dark_grey"/>
+                    <TextView
+                        android:id="@+id/deliveryAddrress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/dark_grey"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Order Placed"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="@dimen/_10ssp"
+                        android:textColor="@color/dark_grey"/>
+                    <TextView
+                        android:id="@+id/OrderDateAndTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/dark_grey"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Always at bottom -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancelBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancel Order"
+        android:textSize="@dimen/_12ssp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/poppins"
+        android:background="@drawable/custom_green_btn"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/_16sdp"
+        android:visibility="gone" />
+</LinearLayout>

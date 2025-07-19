@@ -41,7 +41,7 @@ public final class Utils {
                 product.getProductTitle(),
                 product.getProductCategory(),
                 product.getProductImageUris().get(0),
-                String.valueOf((product.getProductQuantity() + product.getUnit())),
+                product.getProductQuantity() + product.getUnit(),
                 product.getProductPrice(),
                 product.getProductStock(),
                 product.getItemCount(),

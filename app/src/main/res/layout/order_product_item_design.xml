@@ -2,9 +2,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardUseCompatPadding="true"
-    android:layout_marginVertical="@dimen/_2sdp"
-    app:cardCornerRadius="@dimen/_8sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="4dp">
 
@@ -12,7 +9,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:padding="@dimen/_8sdp">
 
             <!-- Product Image -->
             <ImageView
@@ -32,7 +30,7 @@
 
                 <TextView
                     android:id="@+id/productName"
-                    android:layout_width="@dimen/_120sdp"
+                    android:layout_width="@dimen/_140sdp"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_semibold"
@@ -40,24 +38,31 @@
                     android:text="Product Name"
                     android:includeFontPadding="false"
                     android:textSize="@dimen/_10ssp" />
-
-                <TextView
-                    android:id="@+id/productQuantity"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1 kg"
-                    android:includeFontPadding="false"
-                    android:fontFamily="@font/poppins"
-                    android:textSize="@dimen/_10ssp" />
+                    android:layout_marginTop="@dimen/_4sdp">
+                    <TextView
+                        android:id="@+id/productQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 kg"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="@dimen/_10ssp" />
 
-                <TextView
-                    android:id="@+id/itemCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Qty: 2"
-                    android:includeFontPadding="false"
-                    android:fontFamily="@font/poppins"
-                    android:textSize="@dimen/_10ssp" />
+                    <TextView
+                        android:id="@+id/itemCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Qty: 2"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:includeFontPadding="false"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="@dimen/_10ssp" />
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <!-- Price -->
@@ -66,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹300"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
                 android:layout_marginEnd="8dp" />

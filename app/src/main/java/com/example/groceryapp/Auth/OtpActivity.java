@@ -114,6 +114,7 @@ public class OtpActivity extends AppCompatActivity {
 
             // Save user phone number
             Utils.setUserPhoneNumber(number);
+            Utils.setUserName(firstName+lastName);
 
             if (hasPassword) {
                 startActivity(new Intent(this, MainActivity.class));

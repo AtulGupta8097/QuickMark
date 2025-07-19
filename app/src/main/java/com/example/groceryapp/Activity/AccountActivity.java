@@ -96,8 +96,8 @@ public class AccountActivity extends AppCompatActivity {
         }
 
         if (userPhone != null) {
-            binding.userPhone.setText(userPhone);
-            binding.userPhone2.setText(userPhone);
+            binding.userPhone.setText("+91"+userPhone);
+            binding.userPhone2.setText("+91"+userPhone);
         }
 
         currentAddress = userViewModel.getCachedUserAddress();
