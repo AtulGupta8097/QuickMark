@@ -19,9 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -130,8 +135,10 @@ public class UserViewModel extends AndroidViewModel {
     public LiveData<List<OrdersModel>> getUserOrdersLiveData() {
         return userOrdersLiveData;
     }
+
+
     public void fetchOrdersFromFirebase() {
-        String phoneNumber = getCurrentPhone();
+        String phoneNumber = getCurrentPhone();  // Your method to get current user phone
 
         DatabaseReference ordersRef = FirebaseDatabase.getInstance()
                 .getReference("Admins")
@@ -143,16 +150,30 @@ public class UserViewModel extends AndroidViewModel {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         List<OrdersModel> userOrders = new ArrayList<>();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
 
                         for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                             OrdersModel order = orderSnapshot.getValue(OrdersModel.class);
                             if (order != null) {
-                                order.setOrderId(orderSnapshot.getKey()); // capture the key
+                                order.setOrderId(orderSnapshot.getKey());
                                 userOrders.add(order);
                             }
                         }
 
-                        userOrdersLiveData.setValue(userOrders); // NOT orderAdapter.submitList() here
+                        // Sort by date, newest first
+                        userOrders.sort((o1, o2) -> {
+                            try {
+                                Date d1 = sdf.parse(o1.getOrderDate());
+                                Date d2 = sdf.parse(o2.getOrderDate());
+                                assert d2 != null;
+                                return d2.compareTo(d1);  // Descending
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                                return 0;
+                            }
+                        });
+
+                        userOrdersLiveData.setValue(userOrders);
                     }
 
                     @Override
@@ -161,6 +182,7 @@ public class UserViewModel extends AndroidViewModel {
                     }
                 });
     }
+
 
 
     public void fetchAllProductsRealtime() {

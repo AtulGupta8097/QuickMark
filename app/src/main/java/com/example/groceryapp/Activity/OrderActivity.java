@@ -1,6 +1,8 @@
 package com.example.groceryapp.Activity;
 
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -57,12 +59,17 @@ public class OrderActivity extends AppCompatActivity {
         binding.orderRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.orderRecyclerView.setAdapter(adapter);
     }
-
     private void fetchOrders() {
         userViewModel.getUserOrdersLiveData().observe(this, orders -> {
-            if (orders != null) {
+            if (orders != null && !orders.isEmpty()) {
                 adapter.submitList(orders);
+                binding.orderRecyclerView.setVisibility(View.VISIBLE);
+                binding.emptyText.setVisibility(View.GONE);
+            } else {
+                binding.orderRecyclerView.setVisibility(View.GONE);
+                binding.emptyText.setVisibility(View.VISIBLE);
             }
         });
     }
+
 }

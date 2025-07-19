@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,13 +15,18 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.groceryapp.Auth.AuthenticationActivity;
 import com.example.groceryapp.Auth.PasswordActivity;
 import com.example.groceryapp.R;
-import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.databinding.ActivitySplashBinding;
+import com.example.groceryapp.utils.Utils;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
     ActivitySplashBinding binding;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,22 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Animation code
+        startAnimations();
+
+        // Offload delay and database access to background thread
+        executor.execute(() -> {
+            try {
+                Thread.sleep(1600); // delay for animation to finish
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Switch back to main thread to perform Firebase/database and UI operations
+            mainHandler.post(this::decideNextActivity);
+        });
+    }
+
+    private void startAnimations() {
         binding.lottieView.setAnimation(R.raw.fruit_basket_animation);
         binding.lottieView.playAnimation();
 
@@ -67,9 +88,6 @@ public class SplashActivity extends AppCompatActivity {
                 .setStartDelay(1600)
                 .setDuration(600)
                 .start();
-
-        // Delay before routing to next screen
-        new Handler().postDelayed(this::decideNextActivity, 1600);
     }
 
     private void decideNextActivity() {
@@ -86,30 +104,30 @@ public class SplashActivity extends AppCompatActivity {
                             Boolean isPasswordSet = snapshot.child("isPasswordSet").getValue(Boolean.class);
 
                             if (isPasswordSet != null && isPasswordSet) {
-                                // Password is set → Go to MainActivity
                                 startActivity(new Intent(this, MainActivity.class));
                             } else {
-                                // Password not set → Go to PasswordActivity
                                 Intent intent = new Intent(this, PasswordActivity.class);
                                 intent.putExtra("phone", phone);
                                 startActivity(intent);
                             }
                         } else {
-                            // If no user found in DB → Go to AuthenticationActivity
                             startActivity(new Intent(this, AuthenticationActivity.class));
                         }
                         finish();
                     })
                     .addOnFailureListener(e -> {
-                        // Any database error → Go to AuthenticationActivity
                         startActivity(new Intent(this, AuthenticationActivity.class));
                         finish();
                     });
         } else {
-            // No phone stored → Go to AuthenticationActivity
             startActivity(new Intent(this, AuthenticationActivity.class));
             finish();
         }
     }
-}
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executor.shutdown(); // Clean up
+    }
+}

@@ -38,6 +38,7 @@
                     android:text="Product Name"
                     android:includeFontPadding="false"
                     android:textSize="@dimen/_10ssp" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

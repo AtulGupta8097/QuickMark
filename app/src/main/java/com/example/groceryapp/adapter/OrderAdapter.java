@@ -104,7 +104,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
             // Setup nested image recycler view
             List<String> imageUrls = new ArrayList<>();
-            for (int i = 0; i < Math.min(order.getOrderList().size(), 4); i++) {
+            for (int i = 0; i < order.getOrderList().size(); i++) {
                 imageUrls.add(order.getOrderList().get(i).getProductImageUri());
             }
 
