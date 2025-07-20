@@ -8,14 +8,24 @@ QuickMart is a complete food delivery app for personal use – including a *User
 - 🔐 OTP Authentication (Firebase)
 - 🛍 Browse menu & product details
 - 🛒 Add to cart & place orders
-- 📍Choose location using google map
-
+- 📍Choose location using Google Map
 
 ### Admin App:
 - 🧾 Manage food items (CRUD)
 - 📦 View & manage user orders
 - 📸 Upload images to Firebase Storage
 - 📊 Realtime dashboard (Firebase)
+
+## 📲 Test Login (if OTP not received)
+If you're unable to receive OTP due to Firebase limits, use the following test number & OTP:
+
+- 📱 Phone: `9999999999`  
+- 🔑 OTP: `111111`
+- 📱 Phone: `1111111111`  
+- 🔑 OTP: `111111`
+ 
+
+> ⚠️ Note: This number must be whitelisted in Firebase Authentication for testing.
 
 ## 🧱 Tech Stack
 - Java (Android)
