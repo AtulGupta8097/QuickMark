@@ -312,7 +312,7 @@ public class CartActivity extends AppCompatActivity implements PaymentResultList
         intent.putExtra("orderId", orderId);
         intent.putExtra("date", date);
         intent.putExtra("address", address);
-        intent.putExtra("price", String.valueOf(toPay));  // ✅ using existing toPay variable here
+        intent.putExtra("price", String.valueOf(toPay));
         startActivity(intent);
         finish();
     }

@@ -21,6 +21,7 @@ import com.example.groceryapp.databinding.ActivitySignInBinding;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
 import com.example.groceryapp.viewModels.UserViewModel;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
@@ -56,8 +57,20 @@ public class SignInActivity extends AppCompatActivity {
                 String phone = Objects.requireNonNull(binding.numberEd.getText()).toString().trim();
                 Utils.setUserPhoneNumber(phone);
 
-                // Fetch & cache user name after successful login
+                String fcmToken = getSharedPreferences("FCM_PREF", MODE_PRIVATE).getString("fcmToken", null);
+
+                if (fcmToken != null && !fcmToken.isEmpty()) {
+                    FirebaseDatabase.getInstance().getReference("AllUsers")
+                            .child("User")
+                            .child("FCMToken")
+                            .child(phone)
+                            .child("fcmToken")
+                            .setValue(fcmToken);
+                }
+
+// Fetch & cache user name after successful login
                 authViewModel.fetchAndCacheUserName(phone, () -> {
+
                     // Now initialize UserViewModel (after phone is available)
                     userViewModel = ((GroceryApp) getApplication()).getUserViewModel();
 

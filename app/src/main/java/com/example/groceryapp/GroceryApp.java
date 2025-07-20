@@ -1,6 +1,9 @@
 package com.example.groceryapp;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -28,6 +31,9 @@ public class GroceryApp extends Application implements ViewModelStoreOwner {
         // Create UserViewModel with factory and assign it to global instance
         UserViewModelFactory factory = new UserViewModelFactory(this);
         userViewModel = new ViewModelProvider(this, factory).get(UserViewModel.class);
+
+        // Create Notification Channel for FCM
+        createNotificationChannel();
     }
 
     public UserViewModel getUserViewModel() {
@@ -38,5 +44,19 @@ public class GroceryApp extends Application implements ViewModelStoreOwner {
     @Override
     public ViewModelStore getViewModelStore() {
         return viewModelStore;
+    }
+
+    // Create FCM Notification Channel
+    private void createNotificationChannel() {
+        NotificationChannel channel = new NotificationChannel(
+                "order_channel",
+                "Order Notifications",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel.setDescription("Notifications about order status updates.");
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager != null) {
+            manager.createNotificationChannel(channel);
+        }
     }
 }

@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void handleIntentNavigation(Intent intent) {
         if (intent != null && navController != null) {
-           if(intent.getBooleanExtra("navigate_to_search", false)) {
+            if(intent.getBooleanExtra("navigate_to_search", false)) {
                 navController.popBackStack(R.id.ShopFragment, false);
                 navController.navigate(R.id.action_ShopFragment_to_SearchFragment);
                 binding.bottomNav.getMenu().findItem(R.id.ShopFragment).setChecked(true);

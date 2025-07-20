@@ -44,6 +44,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         });
 
         binding.stepView.setSteps(Arrays.asList("Ordered", "Shipped", "Out for Delivery", "Delivered"));
+        binding.backBtn.setOnClickListener(V-> {
+            finish();
+        });
 
         adapter = new OrderProductAdapter(new ArrayList<>());
         binding.orderProductRecyclerView.setLayoutManager(new LinearLayoutManager(this));

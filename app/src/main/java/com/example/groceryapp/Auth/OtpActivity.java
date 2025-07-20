@@ -1,13 +1,16 @@
 package com.example.groceryapp.Auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -15,9 +18,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.groceryapp.Activity.MainActivity;
 import com.example.groceryapp.Models.Users;
+import com.example.groceryapp.R;
 import com.example.groceryapp.databinding.ActivityOtpBinding;
 import com.example.groceryapp.utils.Utils;
 import com.example.groceryapp.viewModels.AuthViewModel;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -31,15 +37,13 @@ public class OtpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         binding = ActivityOtpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
@@ -112,10 +116,25 @@ public class OtpActivity extends AppCompatActivity {
 
             Utils.hideDialog();
 
-            // Save user phone number
+            // Save user details locally
             Utils.setUserPhoneNumber(number);
-            Utils.setUserName(firstName+lastName);
+            Utils.setUserName(firstName + lastName);
 
+            // Retrieve FCM token from SharedPreferences (set earlier in MyFirebaseMessagingService)
+            SharedPreferences prefs = getSharedPreferences("FCM_PREF", MODE_PRIVATE);
+            String fcmToken = prefs.getString("fcmToken", null);
+
+            if (fcmToken != null && !fcmToken.isEmpty()) {
+                FirebaseDatabase.getInstance().getReference("AllUsers")
+                        .child("User")
+                        .child("FCMToken")
+                        .child(number)
+                        .child("fcmToken")
+                        .setValue(fcmToken);
+            }
+
+
+            // Navigate to next screen
             if (hasPassword) {
                 startActivity(new Intent(this, MainActivity.class));
             } else {
@@ -125,6 +144,7 @@ public class OtpActivity extends AppCompatActivity {
             }
             finishAffinity();
         });
+
 
         viewModel.getMessage().observe(this, message -> {
             if (message != null) {

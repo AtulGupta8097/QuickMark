@@ -76,5 +76,8 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.checkout)
     implementation("com.github.shuhart:stepview:1.5.1")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.android.volley:volley:1.2.1")
+
 }
 
