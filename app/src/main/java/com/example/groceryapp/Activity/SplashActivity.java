@@ -128,6 +128,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        executor.shutdown(); // Clean up
+        executor.shutdown();
     }
 }

@@ -109,17 +109,25 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // Logout button
+        // Logout button with confirmation
         binding.logoutButton.setOnClickListener(v -> {
-            Utils.getInstance().signOut();
-            startActivity(new Intent(this, AuthenticationActivity.class));
-            finishAffinity();
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Log Out")
+                    .setMessage("Are you sure you want to log out?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Utils.getInstance().signOut();
+                        startActivity(new Intent(this, AuthenticationActivity.class));
+                        finishAffinity();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
         });
 
-        // Both address TextView and Edit Icon trigger the same address selection animation and launch
+        // Both address TextView and Edit Icon trigger the same address selection
         binding.userAddress.setOnClickListener(v -> animateAddressAndLaunch());
         binding.editAddressIcon.setOnClickListener(v -> animateAddressAndLaunch());
     }
+
 
     private void animateAddressAndLaunch() {
         binding.userAddress.animate()

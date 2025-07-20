@@ -42,7 +42,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -58,9 +57,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE
         );
 
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.large_icon);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "fcm_channel")
                 .setSmallIcon(R.drawable.logo) // white-only icon for status bar
                 .setContentTitle(title)
+                .setLargeIcon(largeIcon)
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
