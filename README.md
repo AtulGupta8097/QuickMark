@@ -33,7 +33,7 @@ If you're unable to receive OTP due to Firebase limits, use the following test n
 - Glide, Lottie, RecyclerView, etc.
 
 ## 🔗 APKs
-👉 [Download User App](https://github.com/AtulGupta8097/QuickMart/releases/download/v1.0.0/app-release.apk))  
+👉 [Download User App]((https://github.com/AtulGupta8097/QuickMart/releases/download/v1.0.0/app-release.apk)  
 👉 [Download Admin App](https://github.com/AtulGupta8097/QuickMart/releases/download/v1.0.0-admin/app-debug.apk)
 
 ## 🔐 Developed by Atul Gupta
