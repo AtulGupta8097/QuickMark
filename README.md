@@ -26,21 +26,22 @@ QuickMart is a complete food delivery app with two modules:
 
 ### User App Workflow  
 <p float="left">
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/authentication.jpg" width="250"/>
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/home.jpg" width="250"/>
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/address.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/authentication.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/home.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/address.jpg" width="250"/>
+
 </p>
 <p float="left">
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/cart.jpg" width="250"/>
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/orders.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/cart.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/orders.jpg" width="250"/>
 </p>
 
 ---
 
 ### Admin App Features  
 <p float="left">
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/admin_dashboard.jpg" width="250"/>
-  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/main/screenshots/order_list.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/add product.jpg" width="250"/>
+  <img src="https://raw.githubusercontent.com/AtulGupta8097/QuickMart/master/screenshots/hadle orders.jpg" width="250"/>
 </p>
 
 ---
